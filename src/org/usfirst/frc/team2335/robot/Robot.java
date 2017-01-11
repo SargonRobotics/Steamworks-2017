@@ -1,14 +1,19 @@
 package org.usfirst.frc.team2335.robot;
 
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2335.robot.commands.FindTape;
+import org.usfirst.frc.team2335.robot.subsystems.Vision;
+
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team2335.robot.commands.ExampleCommand;
-import org.usfirst.frc.team2335.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,9 +27,21 @@ public class Robot extends IterativeRobot
 	//Constants:
 	
 	//Subsystems:
-	public static ExampleSubsystem exampleSubsystem;
+	public static Vision vision;
 	public static OI oi;
 
+	//GRIP
+	private final int IMG_WIDTH = 320;
+	private final int IMG_HEIGHT = 240;
+	
+	public static int area = 0, centerX = 0, centerY = 0;
+	
+	private VisionThread visionThread;
+	
+	private UsbCamera camera;
+	
+	private Object imgLock = new Object();
+	
 	//Auto:
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser();
@@ -33,10 +50,25 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		exampleSubsystem = new ExampleSubsystem();
+		vision = new Vision();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
-		chooser.addDefault("Default Auto", new ExampleCommand());
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
+		{
+			if(!pipeline.filterContoursOutput().isEmpty())
+			{
+				Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				synchronized (imgLock)
+				{
+					area = r.height * r.width;
+					centerX = r.x + (r.width / 2);
+					centerY = r.y + (r.height / 2);
+				}
+			}
+		});
+		
+		chooser.addDefault("Default Auto", new FindTape());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
