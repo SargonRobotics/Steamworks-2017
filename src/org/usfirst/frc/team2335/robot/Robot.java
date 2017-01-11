@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot
 
 	//Auto:
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser chooser = new SendableChooser();
 
 	
 	@Override
@@ -68,7 +68,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousInit()
 	{
-		autonomousCommand = chooser.getSelected();
+		autonomousCommand = (Command) chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
