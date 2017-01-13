@@ -13,17 +13,13 @@ public class FindTape extends Command
     }
 
     protected void initialize()
-    {
-    	SmartDashboard.putString("DB/String 0", "Area:");
-    	SmartDashboard.putString("DB/String 2", "CenterX:");
-    	SmartDashboard.putString("DB/String 5", "CenterY:");
+    {    	
+    	SmartDashboard.putString("DB/String 0", "Average:");
     }
 
     protected void execute()
     {
     	SmartDashboard.putString("DB/String 1", Double.toString(Robot.vision.getArea()));
-    	SmartDashboard.putString("DB/String 3", Double.toString(Robot.vision.getCenterX()));
-    	SmartDashboard.putString("DB/String 6", Double.toString(Robot.vision.getCenterY()));
     }
 
     protected boolean isFinished()

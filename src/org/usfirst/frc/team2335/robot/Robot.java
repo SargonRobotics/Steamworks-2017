@@ -31,8 +31,8 @@ public class Robot extends IterativeRobot
 	public static OI oi;
 
 	//GRIP
-	private final int IMG_WIDTH = 320;
-	private final int IMG_HEIGHT = 240;
+	private static final int IMG_WIDTH = 320;
+	private static final int IMG_HEIGHT = 240;
 	
 	public static int area = 0, centerX = 0, centerY = 0;
 	
@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
 	
 	//Auto:
 	Command autonomousCommand;
-	SendableChooser chooser = new SendableChooser();
+	SendableChooser<Command> chooser = new SendableChooser<Command>();
 
 	
 	@Override
@@ -67,6 +67,7 @@ public class Robot extends IterativeRobot
 				}
 			}
 		});
+		visionThread.start();
 		
 		chooser.addDefault("Default Auto", new FindTape());
 		// chooser.addObject("My Auto", new MyAutoCommand());
