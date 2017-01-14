@@ -15,11 +15,7 @@ public class Axis extends Trigger
 	
 	//Motors
 	public static final int LEFTDRIVE = 1, RIGHTDRIVE = 0, ARM = 8;
-	
-	//Buttons
-	public static final int ARMDOWN = 4, ARMUP = 6;
 
-	
     //Variables to store joystick, and button values
 	private Joystick _controller;
 	private int _axis;
