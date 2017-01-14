@@ -19,7 +19,7 @@ public class OI
 		Axis rotate = new Axis(controller, Robot.ROTATE);
 		Axis strafe = new Axis(controller, Robot.STRAFE);
 		
-		//Drive Commands
+		//Drive commands
 		move.whileActive(new Drive());
 		rotate.whileActive(new Turn());
 		strafe.whileActive(new Strafe());
