@@ -4,9 +4,7 @@ import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
+
 public class Drive extends Command {
 
     public Drive() {
