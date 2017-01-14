@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2335.robot;
 
-import org.usfirst.frc.team2335.robot.commands.ExampleCommand;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team2335.robot.subsystems.ExampleSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,7 +23,6 @@ public class Robot extends IterativeRobot
 	
 	
 	//Subsystems:
-	public static ExampleSubsystem exampleSubsystem;
 	public static DriveTrain driveTrain;
 	public static OI oi;
 
@@ -37,10 +34,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		exampleSubsystem = new ExampleSubsystem();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
-		chooser.addDefault("Default Auto", new ExampleCommand());
+		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
