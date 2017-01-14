@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2335.robot;
 
+import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -7,22 +9,21 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team2335.robot.commands.ExampleCommand;
-import org.usfirst.frc.team2335.robot.subsystems.ExampleSubsystem;
-
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot
 {	
 	//Constants:
+	public static final double DEADZONE = 0.1;
+	
+	//Axes:
+	public static final int MOVE = 0, ROTATE = 0, SIDESTEP = 0;
+	//TODO: Define constants for controllers
+	
+	//Motor ports:
+	public static final int LEFTDRIVE = 0, RIGHTDRIVE = 1, STRAFE = 2;
+	
 	
 	//Subsystems:
-	public static ExampleSubsystem exampleSubsystem;
+	public static DriveTrain driveTrain;
 	public static OI oi;
 
 	//Auto:
@@ -33,10 +34,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		exampleSubsystem = new ExampleSubsystem();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
-		chooser.addDefault("Default Auto", new ExampleCommand());
+		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
@@ -111,4 +111,14 @@ public class Robot extends IterativeRobot
 	{
 		LiveWindow.run();
 	}
+	
+	 public static double deadzone(double amount, double max) //Creates a deadzone for the axes of the controller
+		{
+	    	//If the value from the controller is less than the deadzone value then it zeros out
+	    	//If not it subtracts the deadzone from the controller value
+			amount = -(Math.abs(amount) <= Robot.DEADZONE ? 0 : (amount = (amount < 0) ? amount : amount));
+			
+			//Multiplies the controller value by the slope made from (y2 - y1) / (x2 - x1)
+			return ((max - 0) / ((1 - Robot.DEADZONE) - 0) * (amount - 0));
+		}
 }
