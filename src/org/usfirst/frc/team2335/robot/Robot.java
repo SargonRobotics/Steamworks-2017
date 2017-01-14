@@ -18,7 +18,7 @@ public class Robot extends IterativeRobot
 	
 	//Axes:
 	public static final int MOVE = 0, ROTATE = 0, SIDESTEP = 0;
-	//Define constants for controllers
+	//TODO: Define constants for controllers
 	
 	//Motor ports:
 	public static final int LEFTDRIVE = 0, RIGHTDRIVE = 1, STRAFE = 2;
