@@ -14,12 +14,12 @@ public class OI
 	
 	public OI()
 	{
-		//axes
+		//Axes
 		Axis move = new Axis(controller, Robot.MOVE);
 		Axis rotate = new Axis(controller, Robot.ROTATE);
 		Axis strafe = new Axis(controller, Robot.STRAFE);
 		
-		//drive commands
+		//Drive Commands
 		move.whileActive(new Drive());
 		rotate.whileActive(new Turn());
 		strafe.whileActive(new Strafe());
