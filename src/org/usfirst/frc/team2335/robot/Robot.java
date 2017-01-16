@@ -54,6 +54,8 @@ public class Robot extends IterativeRobot
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
 		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
 			if(!pipeline.filterContoursOutput().isEmpty())

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2335.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import org.usfirst.frc.team2335.robot.Robot;
@@ -94,13 +93,6 @@ public class Vision extends Subsystem
 	    		}
     		}
     	}
-    }
-    
-    private void swap(int index1, int index2)
-    {
-    	double tmp = numberList.get(index1);
-    	numberList.set(index1, numberList.get(index2));
-    	numberList.set(index2, tmp);
     }
     
     private void clearArray()
