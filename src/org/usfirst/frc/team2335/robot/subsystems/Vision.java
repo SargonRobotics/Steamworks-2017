@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2335.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.usfirst.frc.team2335.robot.Robot;
 
@@ -58,22 +60,8 @@ public class Vision extends Subsystem
     }
     
     private void sortArray(int left, int right)
-    {
-    	boolean sorted = true;
-    	
-    	while(sorted == true)
-    	{
-    		sorted = false;
-    		
-    		for(int i = 0; i < numberList.size() - 1; i++)
-    		{
-    			if(numberList.get(i) > numberList.get(i + 1))
-    			{
-    				swap(i, i + 1);
-    				sorted = true;
-    			}
-    		}
-    	}
+    {    	
+    	Collections.sort(numberList);
     }
 	
     private void removeOutliers()
