@@ -15,8 +15,7 @@ public class Robot extends IterativeRobot
 	public static final double DEADZONE = 0.1;
 	
 	//Axes:
-	public static final int MOVE = 0, ROTATE = 0, SIDESTEP = 0;
-	//TODO: Define constants for controllers
+	public static final int MOVE = 0, ROTATE = 2, SIDESTEP = 1;
 	
 	//Motor ports:
 	public static final int LEFTDRIVE = 0, RIGHTDRIVE = 1, STRAFE = 2;
@@ -34,6 +33,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
+		driveTrain = new DriveTrain();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
