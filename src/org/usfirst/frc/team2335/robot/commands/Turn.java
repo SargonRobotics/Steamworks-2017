@@ -28,11 +28,11 @@ public class Turn extends Command
 
     protected void end() 
     {
-    	Robot.driveTrain.stopDrive();
+
     }
     
     protected void interrupted() 
     {
-        end();
+
     }
 }

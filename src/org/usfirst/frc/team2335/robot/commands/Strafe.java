@@ -18,7 +18,7 @@ public class Strafe extends Command
     
     protected void execute() 
     {
-    	Robot.driveTrain.strafe(Robot.oi.getAxis(Robot.STRAFE, 0.8));
+    	Robot.driveTrain.strafe(Robot.oi.getAxis(Robot.STRAFE, 1));
     }
     
     protected boolean isFinished() 

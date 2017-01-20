@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2335.robot.triggers;
 
-import org.usfirst.frc.team2335.robot.Robot;
+import org.usfirst.frc.team2335.robot.OI;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Trigger;
@@ -32,7 +32,7 @@ public class Axis extends Trigger
 	//That means that command will run either once or while this get method is returning true
     public boolean get()
     {
-    	if(Robot.deadzone(_controller.getRawAxis(_axis), 1) > 0 || Robot.deadzone(_controller.getRawAxis(_axis), 1) < 0)
+    	if(OI.deadzone(_controller.getRawAxis(_axis), 1) > 0 || OI.deadzone(_controller.getRawAxis(_axis), 1) < 0)
     	{
     		return true;
     	}

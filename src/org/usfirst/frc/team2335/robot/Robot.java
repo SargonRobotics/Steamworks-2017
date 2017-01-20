@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot
 {	
 	//Constants:
-	public static final double DEADZONE = 0.1;
+	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
 	
 	//Axes:
-	public static final int MOVE = 0, ROTATE = 2, SIDESTEP = 1;
+	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Motor ports:
-	public static final int LEFTDRIVE = 0, RIGHTDRIVE = 1, STRAFE = 2;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
 	
 	//Subsystems:
@@ -111,14 +111,4 @@ public class Robot extends IterativeRobot
 	{
 		LiveWindow.run();
 	}
-	
-	 public static double deadzone(double amount, double max) //Creates a deadzone for the axes of the controller
-		{
-	    	//If the value from the controller is less than the deadzone value then it zeros out
-	    	//If not it subtracts the deadzone from the controller value
-			amount = -(Math.abs(amount) <= Robot.DEADZONE ? 0 : (amount = (amount < 0) ? amount : amount));
-			
-			//Multiplies the controller value by the slope made from (y2 - y1) / (x2 - x1)
-			return ((max - 0) / ((1 - Robot.DEADZONE) - 0) * (amount - 0));
-		}
 }
