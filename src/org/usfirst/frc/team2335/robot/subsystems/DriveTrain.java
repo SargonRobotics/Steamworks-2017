@@ -40,8 +40,7 @@ public class DriveTrain extends Subsystem
 	public void stopStrafe()
 	{
 		strafe.set(0);
-	}
-	
+	}	
 	
 	@Override
 	protected void initDefaultCommand()
