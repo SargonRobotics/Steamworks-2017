@@ -6,6 +6,8 @@ import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,16 +23,26 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+	
 public class Robot extends IterativeRobot
 {	
-	//Constants:
-	public static final int CAMERA_ANGLE = 20;
+	//Constants:			
+	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
+	
+	//Axes:
+	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
+	
+	//Motor ports:
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
+	
 	
 	//Subsystems:
+	public static DriveTrain driveTrain;
 	public static Vision vision;
 	public static OI oi;
 
-	//GRIP
+	//Camera
+	public static final int CAMERA_ANGLE = 20;
 	public static final int IMG_WIDTH = 320;
 	public static final int IMG_HEIGHT = 240;
 	
@@ -50,6 +62,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
+		driveTrain = new DriveTrain();
 		vision = new Vision();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
@@ -74,7 +87,8 @@ public class Robot extends IterativeRobot
 		
 		visionThread.start();
 		
-		//chooser.addDefault("Default Auto", new FindTape());
+		//chooser.addDefault("Default Auto", new FindTape());		
+		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
