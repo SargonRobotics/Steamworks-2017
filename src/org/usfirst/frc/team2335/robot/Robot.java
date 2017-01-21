@@ -2,7 +2,6 @@ package org.usfirst.frc.team2335.robot;
 
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team2335.robot.commands.FindTape;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
@@ -25,21 +24,22 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 public class Robot extends IterativeRobot
 {	
 	//Constants:
+	public static final int CAMERA_ANGLE = 20;
 	
 	//Subsystems:
 	public static Vision vision;
 	public static OI oi;
 
 	//GRIP
-	private static final int IMG_WIDTH = 320;
-	private static final int IMG_HEIGHT = 240;
+	public static final int IMG_WIDTH = 320;
+	public static final int IMG_HEIGHT = 240;
 	
-	public static int area = 0, centerX = 0, centerY = 0;
+	//Values tape
+	public static int centerX = 0, centerX2 = 0, heightPx = 0;
 	
+	//Camera
 	private VisionThread visionThread;
-	
 	private UsbCamera camera;
-	
 	private Object imgLock = new Object();
 	
 	//Auto:
@@ -60,18 +60,21 @@ public class Robot extends IterativeRobot
 		{
 			if(!pipeline.filterContoursOutput().isEmpty())
 			{
-				Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				
 				synchronized (imgLock)
 				{
-					area = r.height * r.width;
-					centerX = r.x + (r.width / 2);
-					centerY = r.y + (r.height / 2);
+					centerX = r1.x + (r1.width / 2);
+					centerX2 = r2.x + (r2.width / 2);
+					heightPx = (r1.y + r1.height) - (r2.y);
 				}
 			}
 		});
+		
 		visionThread.start();
 		
-		chooser.addDefault("Default Auto", new FindTape());
+		//chooser.addDefault("Default Auto", new FindTape());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}

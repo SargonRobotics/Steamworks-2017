@@ -3,28 +3,27 @@ package org.usfirst.frc.team2335.robot.commands;
 import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class FindTape extends Command
+public class CenterRobot extends Command
 {
-    public FindTape()
+    public CenterRobot()
     {
         requires(Robot.vision);
     }
 
     protected void initialize()
-    {    	
-    	SmartDashboard.putString("DB/String 0", "Average:");
+    {
+    	
     }
 
     protected void execute()
     {
-    	SmartDashboard.putString("DB/String 1", Double.toString(Robot.vision.getArea()));
+    	Robot.vision.center();
     }
 
     protected boolean isFinished()
     {
-        return false;
+        return Robot.vision.isCentered();
     }
 
     protected void end()
