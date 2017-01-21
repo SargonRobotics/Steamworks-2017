@@ -1,5 +1,11 @@
 package org.usfirst.frc.team2335.robot;
 
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2335.robot.subsystems.Vision;
+
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -8,10 +14,19 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+	
 public class Robot extends IterativeRobot
 {	
-	//Constants:
+	//Constants:			
 	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
 	
 	//Axes:
@@ -23,19 +38,56 @@ public class Robot extends IterativeRobot
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
+	public static Vision vision;
 	public static OI oi;
 
+	//Camera
+	public static final int CAMERA_ANGLE = 20;
+	public static final int IMG_WIDTH = 320;
+	public static final int IMG_HEIGHT = 240;
+	
+	//Values tape
+	public static int centerX = 0, centerX2 = 0, heightPx = 0;
+	
+	//Camera
+	private VisionThread visionThread;
+	private UsbCamera camera;
+	private Object imgLock = new Object();
+	
 	//Auto:
 	Command autonomousCommand;
-	SendableChooser chooser = new SendableChooser();
+	SendableChooser<Command> chooser = new SendableChooser<Command>();
 
 	
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
 		driveTrain = new DriveTrain();
+		vision = new Vision();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		
+		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
+		{
+			if(!pipeline.filterContoursOutput().isEmpty())
+			{
+				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+				Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
+				
+				synchronized (imgLock)
+				{
+					centerX = r1.x + (r1.width / 2);
+					centerX2 = r2.x + (r2.width / 2);
+					heightPx = (r1.y + r1.height) - (r2.y);
+				}
+			}
+		});
+		
+		visionThread.start();
+		
+		//chooser.addDefault("Default Auto", new FindTape());		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
