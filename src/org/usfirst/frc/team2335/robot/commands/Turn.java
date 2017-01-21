@@ -18,6 +18,7 @@ public class Turn extends Command
 
     protected void execute() 
     {
+        //TODO: Change max value to fit driver
     	Robot.driveTrain.turn(Robot.oi.getAxis(Robot.ROTATE, 0.65));
     }
 
