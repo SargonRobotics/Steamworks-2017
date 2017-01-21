@@ -7,15 +7,6 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 
 public class Axis extends Trigger
 {
-	//Constants
-	public static final double DEADZONE = 0.2;
-	
-	//Axes
-	public static final int MOVE = 1, ROTATE = 0;
-	
-	//Motors
-	public static final int LEFTDRIVE = 1, RIGHTDRIVE = 0, ARM = 8;
-
     //Variables to store joystick, and button values
 	private Joystick _controller;
 	private int _axis;

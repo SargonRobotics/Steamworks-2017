@@ -1,13 +1,16 @@
 package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.Drive;
+import org.usfirst.frc.team2335.robot.commands.ShootGroup;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.commands.Turn;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-//This class connects operator control to different commands
+
 public class OI
 {	
 	Joystick controller = new Joystick(0);
@@ -19,10 +22,16 @@ public class OI
 		Axis move = new Axis(controller, Robot.MOVE);
 		Axis rotate = new Axis(controller, Robot.ROTATE);
 		
+		//Buttons
+		Button shootBall = new JoystickButton(controller, Robot.SHOOT);
+	
 		//Drive commands
 		strafe.whileActive(new Strafe());
 		move.whileActive(new Drive());
 		rotate.whileActive(new Turn());
+		
+		//Shooter commands
+		shootBall.whileHeld(new ShootGroup());
 	}
 	
 	public double getAxis(int axis, double max)

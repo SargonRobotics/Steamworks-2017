@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,18 +13,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot
 {	
 	//Constants:
-	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
+	public static final double DEADZONE = 0.2; //This value is to be edited for best fit
 	
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
-	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
+	//Buttons
+	public static final int SHOOT = 0; //TODO: find controller port for shoot
 	
+	//Motor ports:
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2; 
+	
+	//Shooter motors:
+	public static final int SHOOTER_WHEEL = 3, FEEDER_WHEEL = 4; //TODO: find ports for shooter and feeder motor
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
 	public static OI oi;
+	public static Shooter shooter;
 
 	//Auto:
 	Command autonomousCommand;
