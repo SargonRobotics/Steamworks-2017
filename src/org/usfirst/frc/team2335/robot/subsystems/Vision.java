@@ -5,27 +5,27 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Vision extends Subsystem
-{    
-	private boolean toReturn = false;
-	
-    public double getCenterX()
-    {
-    	return Robot.centerX;
-    }
-    
+{        
     public double getDistance()
     {
     	return (27.5/12) * Robot.IMG_HEIGHT / (2 * Robot.heightPx * Math.tan(Robot.CAMERA_ANGLE));
     }
     
-    public void center()
+    public int center()
     {
-    	
+    	return Robot.centerX < (Robot.IMG_WIDTH / 2) ? -1 : 1;
     }
     
     public boolean isCentered()
     {
-		return toReturn;
+		if(Robot.centerX < (Robot.IMG_WIDTH / 2) - 10 || Robot.centerX > (Robot.IMG_WIDTH / 2) + 10)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
     	
     }
     
@@ -47,10 +47,7 @@ public class Vision extends Subsystem
 		
 		for(int i = 0; i < 5; i++)
 		{
-			switch(value)
-			{
-			case "centerX": numberList.add(getCenterX()); break;
-			}
+			numberList.add(Robot.centerX);
 		}
 		
 		sortArray(0, numberList.size() - 1);

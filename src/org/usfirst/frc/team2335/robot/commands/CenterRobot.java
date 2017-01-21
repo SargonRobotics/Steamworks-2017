@@ -3,6 +3,7 @@ package org.usfirst.frc.team2335.robot.commands;
 import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CenterRobot extends Command
 {
@@ -18,7 +19,15 @@ public class CenterRobot extends Command
 
     protected void execute()
     {
-    	Robot.vision.center();
+    	SmartDashboard.putString("DB/String 0", Integer.toString(Robot.vision.center()));
+    	if(Robot.vision.center() == 1)
+    	{
+    		Robot.driveTrain.strafe(-0.5);
+    	}
+    	else if(Robot.vision.center() == -1)
+    	{
+    		Robot.driveTrain.strafe(-0.5);
+    	}
     }
 
     protected boolean isFinished()
@@ -28,7 +37,7 @@ public class CenterRobot extends Command
 
     protected void end()
     {
-    	
+    	Robot.driveTrain.stopStrafe();
     }
 
     protected void interrupted()
