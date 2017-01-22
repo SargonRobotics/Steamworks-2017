@@ -20,14 +20,20 @@ public class CenterRobot extends Command
     protected void execute()
     {
     	SmartDashboard.putString("DB/String 0", Integer.toString(Robot.vision.center()));
+    	
     	if(Robot.vision.center() == 1)
     	{
-    		Robot.driveTrain.strafe(-0.5);
+    		//Robot.driveTrain.strafe(-0.5);
     	}
     	else if(Robot.vision.center() == -1)
     	{
-    		Robot.driveTrain.strafe(-0.5);
+    		//Robot.driveTrain.strafe(-0.5);
     	}
+    	
+    	System.out.print(Robot.width + ", ");
+    	System.out.print(Robot.height + ", ");
+    	System.out.print(Robot.x + ", ");
+    	System.out.println(Robot.y); 
     }
 
     protected boolean isFinished()

@@ -14,6 +14,8 @@ public class DriveTrain extends Subsystem
 	public DriveTrain()
 	{
 		drive = new RobotDrive(Robot.LEFT_PORT, Robot.RIGHT_PORT);
+		drive.setSafetyEnabled(false);
+		
 		strafe = new TalonSRX(Robot.STRAFE_PORT);
     }
 	
@@ -34,7 +36,7 @@ public class DriveTrain extends Subsystem
 	
 	public void strafe(double strafeVal)
 	{ 
-		strafe.set(strafeVal);
+		strafe.set(-strafeVal);
 	}
 	
 	public void stopStrafe()
@@ -45,7 +47,7 @@ public class DriveTrain extends Subsystem
 	@Override
 	protected void initDefaultCommand()
 	{
-		
+		stopDrive();
 	}
 }
 
