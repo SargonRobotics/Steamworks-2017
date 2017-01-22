@@ -12,15 +12,14 @@ public class StopShooter extends Command {
         requires(Robot.shooter);
     }
 
-    //Length of command
     protected void initialize() 
     {
     	setTimeout(0.5);
     }
 
-    //stops shoot motor
     protected void execute() 
     {
+        //Stops shoot motor
     	Robot.shooter.stopBall();
     }
 

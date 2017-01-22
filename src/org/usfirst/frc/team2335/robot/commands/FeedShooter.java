@@ -17,9 +17,9 @@ public class FeedShooter extends Command {
     	
     }
 
-    //Turns on feed motor
     protected void execute() 
     {
+        //Turns on feed motor
     	Robot.shooter.feedBall();
     }
 
@@ -28,9 +28,9 @@ public class FeedShooter extends Command {
         return false;
     }
 
-    //Turns off feed motor
     protected void end()
     {
+        //Turns off feed motor
     	Robot.shooter.stopFeedBall();
     }
 

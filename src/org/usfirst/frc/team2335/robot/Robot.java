@@ -13,24 +13,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot
 {	
 	//Constants:
-	public static final double DEADZONE = 0.2; //This value is to be edited for best fit
+	public static final double DEADZONE = 0.2;
+	//This value is to be edited for best fit
 	
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Buttons
-	public static final int SHOOT = 0; //TODO: find controller port for shoot
+	public static final int SHOOT = 0;
+	//TODO: find controller port for shoot
 	
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2; 
 	
 	//Shooter motors:
-	public static final int SHOOTER_WHEEL = 3, FEEDER_WHEEL = 4; //TODO: find ports for shooter and feeder motor
+	public static final int SHOOTER_WHEEL = 3, FEEDER_WHEEL = 4;
+	//TODO: find ports for shooter and feeder motor
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
-	public static OI oi;
 	public static Shooter shooter;
+	public static OI oi;
 
 	//Auto:
 	Command autonomousCommand;
@@ -41,6 +44,7 @@ public class Robot extends IterativeRobot
 	public void robotInit() //Runs once to initialize all global variables
 	{
 		driveTrain = new DriveTrain();
+		shooter = new Shooter();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());

@@ -6,6 +6,7 @@ public class ShootGroup extends CommandGroup {
     
     public ShootGroup()
     {
+    	//Will runs these commands one after another
         addSequential(new StartShooter());
         addSequential(new FeedShooter());
         addSequential(new StopShooter());

@@ -17,13 +17,13 @@ public class OI
 	
 	public OI()
 	{
+		//Buttons
+		Button shootBall = new JoystickButton(controller, Robot.SHOOT);
+		
 		//Axes
 		Axis strafe = new Axis(controller, Robot.STRAFE);
 		Axis move = new Axis(controller, Robot.MOVE);
 		Axis rotate = new Axis(controller, Robot.ROTATE);
-		
-		//Buttons
-		Button shootBall = new JoystickButton(controller, Robot.SHOOT);
 	
 		//Drive commands
 		strafe.whileActive(new Strafe());

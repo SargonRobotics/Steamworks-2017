@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Shooter extends Subsystem 
 {
-	//Creates Motors for the Shooter
+	//Motors for the shooter
 	Victor indexMotor;
 	Victor shooterMotor;
 	
@@ -16,17 +16,23 @@ public class Shooter extends Subsystem
 	{
 		super();
 		
-		//Defines Motors for the Shooter
+		//Defines motors for the shooter
 		indexMotor = new Victor(Robot.FEEDER_WHEEL);
 		shooterMotor = new Victor(Robot.SHOOTER_WHEEL);	
 	}
 		
-	//Creates methods for Shooter command group
+	//Shooter motor methods
 	public void shootBall()
 	{
 		shooterMotor.set(0.6);
 	}
 	
+	public void stopBall()
+	{
+		shooterMotor.set(0);
+	}
+	
+	//Feeder motor methods
 	public void feedBall()
 	{
 		//TODO: find best speed for feed motor
@@ -36,11 +42,6 @@ public class Shooter extends Subsystem
 	public void stopFeedBall()
 	{
 		indexMotor.set(0);
-	}
-	
-	public void stopBall()
-	{
-		shooterMotor.set(0);
 	}
     
     public void initDefaultCommand()
