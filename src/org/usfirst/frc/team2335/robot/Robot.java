@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2335.robot;
 
+import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -11,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot
 {	
+	//Buttons:
+	public static final int CLIMB = 1;
+	
 	//Constants:
 	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
 	
@@ -18,11 +22,12 @@ public class Robot extends IterativeRobot
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, CLIMB_PORT = 3;
 	
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
+	public static Climb climb;
 	public static OI oi;
 
 	//Auto:

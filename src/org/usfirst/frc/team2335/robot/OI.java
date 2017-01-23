@@ -3,9 +3,12 @@ package org.usfirst.frc.team2335.robot;
 import org.usfirst.frc.team2335.robot.commands.Drive;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.commands.Turn;
+import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 //This class connects operator control to different commands
 public class OI
@@ -14,6 +17,9 @@ public class OI
 	
 	public OI()
 	{
+		//Buttons
+		Button climb = new JoystickButton(controller, Robot.CLIMB);
+		
 		//Axes
 		Axis strafe = new Axis(controller, Robot.STRAFE);
 		Axis move = new Axis(controller, Robot.MOVE);
@@ -23,6 +29,10 @@ public class OI
 		strafe.whileActive(new Strafe());
 		move.whileActive(new Drive());
 		rotate.whileActive(new Turn());
+		
+		//Climb command
+		climb.whileActive(new Climb());
+		
 	}
 	
 	public double getAxis(int axis, double max)
