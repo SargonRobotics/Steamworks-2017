@@ -35,7 +35,7 @@ public class OI
 		rotate.whileActive(new Turn());
 		
 		//Vision commands
-		center.whileHeld(new CenterRobot());
+		center.whenPressed(new CenterRobot());
 	}
 	
 	public double getAxis(int axis, double max)

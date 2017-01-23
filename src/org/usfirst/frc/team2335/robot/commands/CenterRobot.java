@@ -2,8 +2,8 @@ package org.usfirst.frc.team2335.robot.commands;
 
 import org.usfirst.frc.team2335.robot.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CenterRobot extends Command
 {
@@ -19,21 +19,14 @@ public class CenterRobot extends Command
 
     protected void execute()
     {
-    	SmartDashboard.putString("DB/String 0", Integer.toString(Robot.vision.center()));
-    	
     	if(Robot.vision.center() == 1)
     	{
-    		//Robot.driveTrain.strafe(-0.5);
+    		Robot.driveTrain.strafe(-0.2);
     	}
     	else if(Robot.vision.center() == -1)
     	{
-    		//Robot.driveTrain.strafe(-0.5);
+    		Robot.driveTrain.strafe(0.2);
     	}
-    	
-    	System.out.print(Robot.width + ", ");
-    	System.out.print(Robot.height + ", ");
-    	System.out.print(Robot.x + ", ");
-    	System.out.println(Robot.y); 
     }
 
     protected boolean isFinished()
@@ -43,6 +36,7 @@ public class CenterRobot extends Command
 
     protected void end()
     {
+    	DriverStation.reportWarning("Centered", true);
     	Robot.driveTrain.stopStrafe();
     }
 

@@ -54,7 +54,6 @@ public class Robot extends IterativeRobot
 	
 	//Values tape
 	public static int centerX = 0, centerX2 = 0, heightPx = 0;
-	public static int height = 0, width = 0, x = 0, y = 0;
 	
 	//Camera
 	private VisionThread visionThread;
@@ -87,10 +86,7 @@ public class Robot extends IterativeRobot
 					//TODO: Add explanation of relevant math here, or at least
 					//		a link to where it comes from online.
 					
-					height = r1.height;
-					width = r1.width ;
-					x = r1.x;
-					y = r1.y;
+					centerX = r1.x + (r1.width / 2);
 					
 					//centerX = r1.x + (r1.width / 2);
 					//centerX2 = r2.x + (r2.width / 2);
@@ -214,6 +210,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
+		SmartDashboard.putString("DB/String 0", Double.toString(Robot.centerX));
+    	SmartDashboard.putString("DB/String 1", Integer.toString(Robot.vision.center()));
 		Scheduler.getInstance().run();
 	}
 

@@ -11,20 +11,29 @@ public class Vision extends Subsystem
     	return (27.5/12) * Robot.IMG_HEIGHT / (2 * Robot.heightPx * Math.tan(Robot.CAMERA_ANGLE));
     }
     
+    //Determines which direction to move the motor
     public int center()
     {
-    	return Robot.centerX < (Robot.IMG_WIDTH / 2) ? -1 : 1;
+    	if(Robot.centerX < 80) //80 is the value centerX will be when it's exactly centered
+    	{
+    		return -1;
+    	}
+    	else
+    	{
+    		return 1;
+    	}
     }
     
+    //Determines if the robot is centered, stops the command
     public boolean isCentered()
     {
-		if(Robot.centerX < (Robot.IMG_WIDTH / 2) - 10 || Robot.centerX > (Robot.IMG_WIDTH / 2) + 10)
+		if(Robot.centerX < 85 && Robot.centerX > 75)
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
     	
     }
