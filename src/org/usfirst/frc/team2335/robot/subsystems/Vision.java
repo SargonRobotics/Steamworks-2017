@@ -5,7 +5,7 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Vision extends Subsystem
-{        
+{        	
     public double getDistance()
     {
     	return (27.5/12) * Robot.IMG_HEIGHT / (2 * Robot.heightPx * Math.tan(Robot.CAMERA_ANGLE));

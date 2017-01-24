@@ -8,6 +8,8 @@ import org.usfirst.frc.team2335.robot.subsystems.Vision;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -26,7 +28,7 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 public class Robot extends IterativeRobot
 {	
 	//Constants:			
-	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
+	public static final double DEADZONE = 0.2; //This value is to be edited for best for
 	//TODO: Write a more descriptive comment? I don't get the idea at first
 	//		glance.
 	
@@ -45,19 +47,20 @@ public class Robot extends IterativeRobot
 	public static Vision vision;
 	public static OI oi;
 
+	//Relay
+	public static final int RELAY_PORT = 1;
+	Relay cameraLight;
+	
 	//Camera
 	//TODO: Read these off of the UsbCamera object after basic functionality.
 	//		Exclude CAMERA_ANGLE; we need to define that ourselves anyway.
-	public static final int CAMERA_ANGLE = 20;
-	public static final int IMG_WIDTH = 320;
-	public static final int IMG_HEIGHT = 240;
+	public static final int CAMERA_ANGLE = 20, IMG_WIDTH = 320, IMG_HEIGHT = 240;
 	
 	//Values tape
 	public static int centerX = 0, centerX2 = 0, heightPx = 0;
 	
 	//Camera
 	private VisionThread visionThread;
-	//private UsbCamera camera;
 	private Object imgLock = new Object();
 	
 	//Auto:
@@ -73,7 +76,7 @@ public class Robot extends IterativeRobot
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		
-		//Currect view: 6ft
+		//Currect view: 11ft
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
 			if(!pipeline.filterContoursOutput().isEmpty())
@@ -142,6 +145,8 @@ public class Robot extends IterativeRobot
 		vision = new Vision();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
+		cameraLight = new Relay(RELAY_PORT);
+		
 		//chooser.addDefault("Default Auto", new FindTape());		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -199,7 +204,7 @@ public class Robot extends IterativeRobot
 
 	@Override
 	public void teleopInit()
-	{ 
+	{
 		// This makes sure that the autonomous stops running when teleop starts running.
 		if (autonomousCommand != null)
 		{
@@ -212,6 +217,19 @@ public class Robot extends IterativeRobot
 	{
 		SmartDashboard.putString("DB/String 0", Double.toString(Robot.centerX));
     	SmartDashboard.putString("DB/String 1", Integer.toString(Robot.vision.center()));
+    	
+    	//Sees if button on the dashboard labled "New Button" (stupid name I know) is pressed
+    	if(SmartDashboard.getBoolean("DB/Button 0", false))
+    	{
+    		//If so, then it turns the light on
+    		//Use kForward instead of kOn because kForward uses GND and +12V, where as kOn uses +12V and -12V
+    		cameraLight.set(Relay.Value.kForward);
+    	}
+    	else
+    	{
+    		cameraLight.set(Relay.Value.kOff);
+    	}
+    	
 		Scheduler.getInstance().run();
 	}
 
