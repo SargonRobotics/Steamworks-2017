@@ -9,7 +9,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -217,6 +216,9 @@ public class Robot extends IterativeRobot
 	{
 		SmartDashboard.putString("DB/String 0", Double.toString(Robot.centerX));
     	SmartDashboard.putString("DB/String 1", Integer.toString(Robot.vision.center()));
+    	SmartDashboard.putString("DB/String 2", Integer.toString(Robot.vision.center()));
+    	SmartDashboard.putString("DB/String 3", Integer.toString(Robot.vision.center()));
+
     	
     	//Sees if button on the dashboard labled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))

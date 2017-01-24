@@ -8,7 +8,12 @@ public class Vision extends Subsystem
 {        	
     public double getDistance()
     {
+    	//TODO: Test this formla to see if it works correctly
     	return (27.5/12) * Robot.IMG_HEIGHT / (2 * Robot.heightPx * Math.tan(Robot.CAMERA_ANGLE));
+    	
+    	//27.5/12 is the height of the taget in feet (inches/12)
+    	//IMG_HEIGHT is the the pixel height of the camera image
+    	//heightPx is the height of the tape in pixles
     }
     
     //Determines which direction to move the motor
