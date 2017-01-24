@@ -16,7 +16,7 @@ public class Robot extends IterativeRobot
 	public static final int CLIMB = 1;
 	
 	//Constants:
-	public static final double DEADZONE = 0.2; //This value is to be edited for best fir
+	public static final double DEADZONE = 0.2; //This value is to be edited for best fit
 	
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
@@ -39,6 +39,7 @@ public class Robot extends IterativeRobot
 	public void robotInit() //Runs once to initialize all global variables
 	{
 		driveTrain = new DriveTrain();
+		climb = new Climb();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());

@@ -4,10 +4,9 @@ import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
-public class ClimbCommand extends Command {
-
-    public ClimbCommand() 
+public class Lift extends Command
+{
+    public Lift() 
     {
         requires(Robot.climb);
     }
@@ -21,8 +20,8 @@ public class ClimbCommand extends Command {
    
     protected void execute() 
     {
+    	//Starts the climb process
     	Robot.climb.startClimb();
-    	//Turns on motor
     }
 
     
@@ -34,8 +33,8 @@ public class ClimbCommand extends Command {
     
     protected void end() 
     {
+    	//Stops the climb motor
     	Robot.climb.stopClimb();
-    	//Turns off motor
     }
 
     protected void interrupted() 

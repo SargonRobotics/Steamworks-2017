@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Climb extends Subsystem 
 {
-    // Motor for climbing
+    //Motor for climbing
 	Victor climbMotor;
 	
 	public Climb()
@@ -22,8 +22,9 @@ public class Climb extends Subsystem
 	
 	public void startClimb()
 	{
-		climbMotor.set(0.5);
+		climbMotor.set(1);
 		//TODO Find real value
+		//Using full power for now
 	}
 	
 	public void stopClimb()

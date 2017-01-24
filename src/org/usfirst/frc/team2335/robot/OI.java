@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.Drive;
+import org.usfirst.frc.team2335.robot.commands.Lift;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.commands.Turn;
-import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,7 +31,7 @@ public class OI
 		rotate.whileActive(new Turn());
 		
 		//Climb command
-		climb.whileActive(new Climb());
+		climb.whileActive(new Lift());
 		
 	}
 	
