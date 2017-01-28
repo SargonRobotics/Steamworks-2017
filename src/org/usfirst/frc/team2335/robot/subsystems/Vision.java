@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2335.robot.subsystems;
 
+import java.text.DecimalFormat;
+
 import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -11,14 +13,15 @@ public class Vision extends Subsystem
 	
 	//TARGET_FEET is out target width in feet, CAMERA_ANGLE is our full view angle
 	//And FULL_VIEW_PX is out width resolution
-	private final double TARGET_FEET = 1.25, CAMERA_ANGLE = 46.46, FULL_VIEW_PX = Robot.IMG_WIDTH;
+	private final float TARGET_FEET = 1.25f, CAMERA_ANGLE = 46.46f, FULL_VIEW_PX = Robot.IMG_WIDTH;
 	
-    public double getDistance()
+    public float getDistance()
     {
-    	double targetWidthPx, feetPxRatio, fullFiewInFeet, halfOfView, distance;
+    	//Use floats, they're way more accurate (AKA: doubles are the devil)
+    	float targetWidthPx, feetPxRatio, fullFiewInFeet, halfOfView, distance;	
     	
     	targetWidthPx = Robot.targetWidthPx; //Gets the width of the reflective tape in pixels from the pipeline
-    	feetPxRatio = TARGET_FEET / targetWidthPx ; //Ratio for getting our full view in ft
+    	feetPxRatio = TARGET_FEET / targetWidthPx; //Ratio for getting our full view in ft
     	fullFiewInFeet = feetPxRatio * FULL_VIEW_PX; //Our full view of the camera in ft
     	
     	halfOfView = fullFiewInFeet / 2; //Value used with trig to find distance
@@ -26,7 +29,7 @@ public class Vision extends Subsystem
     	//Math.tan uses radians, so we convert our angle value to radians
     	//To find distance we use trig, knowing one of the legs, and an angle
     	//We use tangent to find the other leg of the right triangle
-    	distance = halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2));
+    	distance = (float) (halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2)));
     	
     	return distance;
     }

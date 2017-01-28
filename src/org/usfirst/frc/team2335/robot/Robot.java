@@ -74,6 +74,7 @@ public class Robot extends IterativeRobot
 		//		since it's longer and more complex.		
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		camera.setFPS(30);
 		
 		//Currect view: 11ft
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
