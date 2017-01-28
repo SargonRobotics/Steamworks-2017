@@ -9,9 +9,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj.vision.VisionPipeline;
 public class GripPipeline implements VisionPipeline {
 
 	//Outputs
-	private Mat cvResizeOutput = new Mat();
 	private Mat hslThresholdOutput = new Mat();
+	private Mat cvDilateOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
@@ -39,36 +39,37 @@ public class GripPipeline implements VisionPipeline {
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
 	@Override	public void process(Mat source0) {
-		// Step CV_resize0:
-		Mat cvResizeSrc = source0;
-		Size cvResizeDsize = new Size(0, 0);
-		double cvResizeFx = 0.5;
-		double cvResizeFy = 0.5;
-		int cvResizeInterpolation = Imgproc.INTER_LINEAR;
-		cvResize(cvResizeSrc, cvResizeDsize, cvResizeFx, cvResizeFy, cvResizeInterpolation, cvResizeOutput);
-
 		// Step HSL_Threshold0:
-		Mat hslThresholdInput = cvResizeOutput;
-		double[] hslThresholdHue = {58.089019988834075, 93.61203790726671};
-		double[] hslThresholdSaturation = {18.372280753190946, 84.27372937358156};
-		double[] hslThresholdLuminance = {75.67446043165468, 185.7300509337861};
+		Mat hslThresholdInput = source0;
+		double[] hslThresholdHue = {61.07802560138137, 97.97298417905363};
+		double[] hslThresholdSaturation = {137.58992805755395, 255.0};
+		double[] hslThresholdLuminance = {169.69424460431657, 252.83531409168083};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
+		// Step CV_dilate0:
+		Mat cvDilateSrc = hslThresholdOutput;
+		Mat cvDilateKernel = new Mat();
+		Point cvDilateAnchor = new Point(-1, -1);
+		double cvDilateIterations = 1.0;
+		int cvDilateBordertype = Core.BORDER_CONSTANT;
+		Scalar cvDilateBordervalue = new Scalar(-1);
+		cvDilate(cvDilateSrc, cvDilateKernel, cvDilateAnchor, cvDilateIterations, cvDilateBordertype, cvDilateBordervalue, cvDilateOutput);
+
 		// Step Find_Contours0:
-		Mat findContoursInput = hslThresholdOutput;
+		Mat findContoursInput = cvDilateOutput;
 		boolean findContoursExternalOnly = false;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 40.0;
-		double filterContoursMinPerimeter = 50.0;
-		double filterContoursMinWidth = 0.0;
+		double filterContoursMinArea = 20.0;
+		double filterContoursMinPerimeter = 40.0;
+		double filterContoursMinWidth = 60.0;
 		double filterContoursMaxWidth = 1000.0;
 		double filterContoursMinHeight = 0.0;
 		double filterContoursMaxHeight = 1000.0;
-		double[] filterContoursSolidity = {0.0, 100.0};
-		double filterContoursMaxVertices = 1000000.0;
+		double[] filterContoursSolidity = {76.43884892086331, 100.0};
+		double filterContoursMaxVertices = 1.0E7;
 		double filterContoursMinVertices = 0.0;
 		double filterContoursMinRatio = 0.0;
 		double filterContoursMaxRatio = 1000.0;
@@ -77,19 +78,19 @@ public class GripPipeline implements VisionPipeline {
 	}
 
 	/**
-	 * This method is a generated getter for the output of a CV_resize.
-	 * @return Mat output from CV_resize.
-	 */
-	public Mat cvResizeOutput() {
-		return cvResizeOutput;
-	}
-
-	/**
 	 * This method is a generated getter for the output of a HSL_Threshold.
 	 * @return Mat output from HSL_Threshold.
 	 */
 	public Mat hslThresholdOutput() {
 		return hslThresholdOutput;
+	}
+
+	/**
+	 * This method is a generated getter for the output of a CV_dilate.
+	 * @return Mat output from CV_dilate.
+	 */
+	public Mat cvDilateOutput() {
+		return cvDilateOutput;
 	}
 
 	/**
@@ -110,23 +111,6 @@ public class GripPipeline implements VisionPipeline {
 
 
 	/**
-	 * Resizes an image.
-	 * @param src The image to resize.
-	 * @param dSize size to set the image.
-	 * @param fx scale factor along X axis.
-	 * @param fy scale factor along Y axis.
-	 * @param interpolation type of interpolation to use.
-	 * @param dst output image.
-	 */
-	private void cvResize(Mat src, Size dSize, double fx, double fy, int interpolation,
-		Mat dst) {
-		if (dSize==null) {
-			dSize = new Size(0,0);
-		}
-		Imgproc.resize(src, dst, dSize, fx, fy, interpolation);
-	}
-
-	/**
 	 * Segment an image based on hue, saturation, and luminance ranges.
 	 *
 	 * @param input The image on which to perform the HSL threshold.
@@ -140,6 +124,30 @@ public class GripPipeline implements VisionPipeline {
 		Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 		Core.inRange(out, new Scalar(hue[0], lum[0], sat[0]),
 			new Scalar(hue[1], lum[1], sat[1]), out);
+	}
+
+	/**
+	 * Expands area of higher value in an image.
+	 * @param src the Image to dilate.
+	 * @param kernel the kernel for dilation.
+	 * @param anchor the center of the kernel.
+	 * @param iterations the number of times to perform the dilation.
+	 * @param borderType pixel extrapolation method.
+	 * @param borderValue value to be used for a constant border.
+	 * @param dst Output Image.
+	 */
+	private void cvDilate(Mat src, Mat kernel, Point anchor, double iterations,
+	int borderType, Scalar borderValue, Mat dst) {
+		if (kernel == null) {
+			kernel = new Mat();
+		}
+		if (anchor == null) {
+			anchor = new Point(-1,-1);
+		}
+		if (borderValue == null){
+			borderValue = new Scalar(-1);
+		}
+		Imgproc.dilate(src, dst, kernel, anchor, (int)iterations, borderType, borderValue);
 	}
 
 	/**

@@ -5,34 +5,50 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Vision extends Subsystem
-{        	
+{      
+	//Value for finding the center of the camera (width resolution divided by 2)
+	private int center = Robot.IMG_WIDTH / 2;
+	
+	//TARGET_FEET is out target width in feet, CAMERA_ANGLE is our full view angle
+	//And FULL_VIEW_PX is out width resolution
+	private final double TARGET_FEET = 1.25, CAMERA_ANGLE = 46.46, FULL_VIEW_PX = Robot.IMG_WIDTH;
+	
     public double getDistance()
     {
-    	//TODO: Test this formla to see if it works correctly
-    	return (27.5/12) * Robot.IMG_HEIGHT / (2 * Robot.heightPx * Math.tan(Robot.CAMERA_ANGLE));
+    	double targetWidthPx, feetPxRatio, fullFiewInFeet, halfOfView, distance;
     	
-    	//27.5/12 is the height of the taget in feet (inches/12)
-    	//IMG_HEIGHT is the the pixel height of the camera image
-    	//heightPx is the height of the tape in pixles
+    	targetWidthPx = Robot.targetWidthPx; //Gets the width of the reflective tape in pixels from the pipeline
+    	feetPxRatio = TARGET_FEET / targetWidthPx ; //Ratio for getting our full view in ft
+    	fullFiewInFeet = feetPxRatio * FULL_VIEW_PX; //Our full view of the camera in ft
+    	
+    	halfOfView = fullFiewInFeet / 2; //Value used with trig to find distance
+    	
+    	//Math.tan uses radians, so we convert our angle value to radians
+    	//To find distance we use trig, knowing one of the legs, and an angle
+    	//We use tangent to find the other leg of the right triangle
+    	distance = halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2));
+    	
+    	return distance;
     }
     
     //Determines which direction to move the motor
     public int center()
     {
-    	if(Robot.centerX < 80) //80 is the value centerX will be when it's exactly centered
+    	if(Robot.centerX < center)
     	{
-    		return -1;
+    		return 1;
     	}
     	else
     	{
-    		return 1;
+    		return -1;
     	}
     }
     
     //Determines if the robot is centered, stops the command
     public boolean isCentered()
     {
-		if(Robot.centerX < 85 && Robot.centerX > 75)
+    	//+5 and -5 set a range for the center to be in, since it will most likely not be exactly in the center
+		if(Robot.centerX < center + 5 && Robot.centerX > center - 5)
 		{
 			return true;
 		}
@@ -48,79 +64,3 @@ public class Vision extends Subsystem
         
     }
 }
-
-
-//Keeping this for later use incase we need it
-//This finds the average of 5 values and removes any outliers in that set of data
-/*
-	private ArrayList<Double> numberList = new ArrayList<Double>();
-		
-	public double getAverage(String value)
-	{    	
-		clearArray();
-		
-		for(int i = 0; i < 5; i++)
-		{
-			numberList.add(Robot.centerX);
-		}
-		
-		sortArray(0, numberList.size() - 1);
-		removeOutliers();
-		
-		return findAverage();
-	}
-	
-	private double findAverage()
-	{
-		double average = 0;
-		
-		for(int i = 0; i < numberList.size(); i++)
-		{
-			average += numberList.get(i);
-		}
-		
-		return (average / numberList.size());
-	}
-	
-	private void sortArray(int left, int right)
-	{    	
-		Collections.sort(numberList);
-	}
-	
-	private void removeOutliers()
-	{
-		int counter = 0;
-		
-		while(counter < numberList.size())
-		{
-			if(counter == 0)
-			{
-				if(numberList.get(counter + 1) - numberList.get(counter) >= 2000
-						&& numberList.get(counter + 2) - numberList.get(counter + 1) <= 2000)
-				{
-					numberList.remove(counter);
-				}
-				else
-				{
-					counter++;
-				}
-			}
-			else
-			{
-				if(numberList.get(counter) - numberList.get(counter - 1) >= 2000)
-				{
-					numberList.remove(counter);
-				}
-				else
-				{
-					counter++;
-				}
-			}
-		}
-	}
-	
-	private void clearArray()
-	{
-		numberList.clear();
-	}
-*/

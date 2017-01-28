@@ -36,7 +36,7 @@ public class DriveTrain extends Subsystem
 	
 	public void strafe(double strafeVal)
 	{ 
-		strafe.set(-strafeVal);
+		strafe.set(strafeVal);
 	}
 	
 	public void stopStrafe()

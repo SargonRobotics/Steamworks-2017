@@ -21,11 +21,11 @@ public class CenterRobot extends Command
     {
     	if(Robot.vision.center() == 1)
     	{
-    		Robot.driveTrain.strafe(-0.2);
+    		Robot.driveTrain.strafe(0.2);
     	}
     	else if(Robot.vision.center() == -1)
     	{
-    		Robot.driveTrain.strafe(0.2);
+    		Robot.driveTrain.strafe(-0.2);
     	}
     }
 

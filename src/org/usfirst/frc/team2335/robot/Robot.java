@@ -53,10 +53,10 @@ public class Robot extends IterativeRobot
 	//Camera
 	//TODO: Read these off of the UsbCamera object after basic functionality.
 	//		Exclude CAMERA_ANGLE; we need to define that ourselves anyway.
-	public static final int CAMERA_ANGLE = 20, IMG_WIDTH = 320, IMG_HEIGHT = 240;
-	
+	public static final int IMG_WIDTH = 640, IMG_HEIGHT = 480;
+		
 	//Values tape
-	public static int centerX = 0, centerX2 = 0, heightPx = 0;
+	public static int centerX = 0, targetWidthPx = 0;
 	
 	//Camera
 	private VisionThread visionThread;
@@ -81,7 +81,6 @@ public class Robot extends IterativeRobot
 			if(!pipeline.filterContoursOutput().isEmpty())
 			{
 				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-				//Rect r2 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1));
 								
 				synchronized (imgLock)
 				{
@@ -89,10 +88,7 @@ public class Robot extends IterativeRobot
 					//		a link to where it comes from online.
 					
 					centerX = r1.x + (r1.width / 2);
-					
-					//centerX = r1.x + (r1.width / 2);
-					//centerX2 = r2.x + (r2.width / 2);
-					//heightPx = (r1.y + r1.height) - (r2.y);
+					targetWidthPx = r1.width;
 					
 					//TODO: Double-check the math as written on the following:
 					//http://wpilib.screenstepslive.com/s/4485/m/24194/l/682952-2017-vision-examples
@@ -214,11 +210,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(Robot.centerX));
-    	SmartDashboard.putString("DB/String 1", Integer.toString(Robot.vision.center()));
-    	SmartDashboard.putString("DB/String 2", Integer.toString(Robot.vision.center()));
-    	SmartDashboard.putString("DB/String 3", Integer.toString(Robot.vision.center()));
-
+		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
+    	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
+    	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
     	
     	//Sees if button on the dashboard labled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
