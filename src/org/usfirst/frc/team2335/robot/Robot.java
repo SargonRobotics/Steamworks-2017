@@ -27,9 +27,10 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 public class Robot extends IterativeRobot
 {	
 	//Constants:			
-	public static final double DEADZONE = 0.2; //This value is to be edited for best for
-	//TODO: Write a more descriptive comment? I don't get the idea at first
-	//		glance.
+	//0.2 is the value that everything before that is zeroed out
+	//So about 20% of the input will be zeroed out
+	//This created a small zone where no input will affect the output: a "deadzone"
+	public static final double DEADZONE = 0.2;
 	
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
@@ -41,6 +42,8 @@ public class Robot extends IterativeRobot
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
 	//TODO: Remove extra newline.
+	//TODO: Remove unnecessary TODO comment
+	
 	//Subsystems:
 	public static DriveTrain driveTrain;
 	public static Vision vision;
@@ -76,7 +79,6 @@ public class Robot extends IterativeRobot
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
 		
-		//Currect view: 11ft
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
 			if(!pipeline.filterContoursOutput().isEmpty())
@@ -85,11 +87,10 @@ public class Robot extends IterativeRobot
 								
 				synchronized (imgLock)
 				{
-					//TODO: Add explanation of relevant math here, or at least
-					//		a link to where it comes from online.
-					
 					centerX = r1.x + (r1.width / 2);
 					targetWidthPx = r1.width;
+					
+					//TODO: Remove any irrelevant comments out of the cluster fuck below
 					
 					//TODO: Double-check the math as written on the following:
 					//http://wpilib.screenstepslive.com/s/4485/m/24194/l/682952-2017-vision-examples
@@ -135,11 +136,14 @@ public class Robot extends IterativeRobot
 			}
 		});
 		
+		//Please for the love of god don't forget this line or else nothing works and I lose will to live
 		visionThread.start();
 		
 		driveTrain = new DriveTrain();
 		vision = new Vision();
-		oi = new OI(); //Initialize OI last or else your code will crash
+		
+		//This one comes last or else your code dies just like you if you don't define it last
+		oi = new OI();
 		
 		cameraLight = new Relay(RELAY_PORT);
 		
@@ -150,7 +154,7 @@ public class Robot extends IterativeRobot
 	}
 
 	@Override
-	public void disabledInit() //Called when robot enters disabled mode. Used for retting any values.
+	public void disabledInit() //Called when robot enters disabled mode. Used for reseting any values.
 	{
 
 	}
@@ -215,7 +219,7 @@ public class Robot extends IterativeRobot
     	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
     	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
     	
-    	//Sees if button on the dashboard labled "New Button" (stupid name I know) is pressed
+    	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
     	{
     		//If so, then it turns the light on
