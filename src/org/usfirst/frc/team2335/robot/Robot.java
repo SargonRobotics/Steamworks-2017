@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
 	//Ultrasonic ports:
-	public static final int ULTRASONIC_ECHO_PULSE_OUTPUT = 0, ULTRASONIC_TRIGGER_PULSE_INPUT = 1;
+	public static final int ECHO_PIN = 0, PULSE_PIN = 1;
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
