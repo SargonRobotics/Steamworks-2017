@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2335.robot.subsystems;
 
+import org.usfirst.frc.team2335.robot.Robot;
+
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -8,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Ultrasound extends Subsystem {
 
-   Ultrasonic ultra = new Ultrasonic(1,1);
+   Ultrasonic ultra = new Ultrasonic(Robot.ULTRASONIC_TRIGGER_PULSE_INPUT, Robot.ULTRASONIC_ECHO_PULSE_OUTPUT);
    
    public void robotInit() {
 	   ultra.setAutomaticMode(true);
