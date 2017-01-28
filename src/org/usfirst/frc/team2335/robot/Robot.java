@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,9 +21,12 @@ public class Robot extends IterativeRobot
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
+	//Ultrasonic ports:
+	public static final int ULTRASONIC_ECHO_PULSE_OUTPUT = 0, ULTRASONIC_TRIGGER_PULSE_INPUT = 1;
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
+	public static Ultrasound ultraSound;
 	public static OI oi;
 
 	//Auto:
@@ -34,6 +38,7 @@ public class Robot extends IterativeRobot
 	public void robotInit() //Runs once to initialize all global variables
 	{
 		driveTrain = new DriveTrain();
+		ultraSound = new Ultrasound();
 		oi = new OI(); //Initialize OI last or else your code will crash
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
@@ -103,6 +108,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
+		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRange()));
 		Scheduler.getInstance().run();
 	}
 
