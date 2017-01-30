@@ -29,17 +29,7 @@ public class Vision extends Subsystem
     	//We use tangent to find the other leg of the right triangle
     	distance = (float) (halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2)));
     	
-    	return round(distance);
-    }
-    
-    //Rounds the value inputed out to 2 decimal places
-    private float round(float val)
-    {
-    	//Moves the decimal over 2 places
-    	val = Math.round(val + 100);
-    	
-    	//After it's rounded it moves the decimal place back to it's original
-    	return val / 100;
+    	return distance;
     }
     
     //Determines which direction to move the motor
