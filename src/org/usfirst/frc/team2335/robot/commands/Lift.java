@@ -17,19 +17,16 @@ public class Lift extends Command
     	
     }
 
-   
     protected void execute() 
     {
     	//Starts the climb process
     	Robot.climb.startClimb();
     }
-
     
     protected boolean isFinished() 
     {
         return false;
     }
-
     
     protected void end() 
     {
