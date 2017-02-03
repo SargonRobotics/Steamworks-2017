@@ -37,10 +37,12 @@ public class Vision extends Subsystem
     {
     	if(Robot.centerX < center)
     	{
+    		//Returns 1 if the robot needs to move right
     		return 1;
     	}
     	else
     	{
+    		//Returns -1 if the robot needs to move left
     		return -1;
     	}
     }
