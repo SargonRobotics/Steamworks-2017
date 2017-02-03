@@ -29,6 +29,8 @@ public class Vision extends Subsystem
     	//We use tangent to find the other leg of the right triangle
     	distance = (float) (halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2)));
     	
+    	//TODO: Add a function that factors out our common error %
+    	
     	return distance;
     }
     
