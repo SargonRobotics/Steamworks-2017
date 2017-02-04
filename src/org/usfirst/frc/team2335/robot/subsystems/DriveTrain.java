@@ -14,6 +14,10 @@ public class DriveTrain extends Subsystem
 	public DriveTrain()
 	{
 		drive = new RobotDrive(Robot.LEFT_PORT, Robot.RIGHT_PORT);
+		
+		//This makes it so there isn't the "Output not updated often enough" error spouted at us
+		drive.setSafetyEnabled(false);
+		
 		strafe = new TalonSRX(Robot.STRAFE_PORT);
     }
 	
@@ -45,7 +49,7 @@ public class DriveTrain extends Subsystem
 	@Override
 	protected void initDefaultCommand()
 	{
-		
+		stopDrive();
 	}
 }
 
