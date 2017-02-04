@@ -108,7 +108,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRange()));
+		SmartDashboard.putString("DB/String 0", ultraSound.getRange());
 		Scheduler.getInstance().run();
 	}
 
