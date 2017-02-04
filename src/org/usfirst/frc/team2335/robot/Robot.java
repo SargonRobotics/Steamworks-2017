@@ -87,51 +87,14 @@ public class Robot extends IterativeRobot
 								
 				synchronized (imgLock)
 				{
+					//centerX value will be the x coordinate in pixels for the exact center point of the tape
+					//r1.x is the left x coordinate value for the tape
+					//and r1.width is how many pixels wide the tape is seen
+					//so to find the center it finds the edge, and adds half the width
 					centerX = r1.x + (r1.width / 2);
+					
+					//targetWidthPx is what width our reflective tape is, used in math for distance
 					targetWidthPx = r1.width;
-					
-					//TODO: Remove any irrelevant comments out of the cluster fuck below
-					
-					//TODO: Double-check the math as written on the following:
-					//http://wpilib.screenstepslive.com/s/4485/m/24194/l/682952-2017-vision-examples
-					//The following assumes that (r.x, r.y) is the top-left corner.
-					/*
-					double r1Bottom = r1.y-r1.height;
-					double r1Right = r1.x+r1.width;
-					
-					double r2Bottom = r2.y-r1.height;
-					double r2Right = r2.x+r2.width;
-					
-					double groupHeight = r1.height / ((r2Bottom - r1.y) * .4);
-					double dTop = (r2.y - r1.y) / ((r2Bottom - r1.y) * .6);
-					double lEdge = ((r1.x - r2.x) / r1.width) + 1;
-					double widthRatio = r1.width / r2.width;
-					double heightRatio = r1.height / (r2.height * 2);
-					
-					double widthScore = 100 - (100*Math.abs(1 - widthRatio));
-					double heightScore = 100 - (100*Math.abs(1 - widthRatio));
-					
-					 */
-					/*
-					 * In the formulas below, 1 followed by a letter refers to a coordinate of the bounding 
-					 * rect of the first contour, which is the larger of the two (e.g. 1L = 1st contour left e
-					 * dge) and 2 with a letter is the 2nd contour. (H=Height, L = Left, T = Top, B = Bottom, 
-					 * W = Width)
-
-    Group Height = 1H /((2B - 1T) *.4) Top height should be 40% of total height (4in / 10 in.)
-    dTop = (2T - 1T) /((2B - 1T) * .6) Top of bottom stripe to top of top stripe should be 60% of total height 
-    (6in / 10 in.)
-    LEdge = ((1L - 2L) / 1W) + 1       The distance between the left edge of contour 1 and the left edge of 
-    contour 2 should be small relative to the width of the 1st contour (then we add 1 to make the ratio centered 
-    on 1
-    Width ratio = 1W / 2W   The widths of both contours should be about the same
-    Height ratio = 1H / (2H * 2)   The larger stripe should be twice as tall as the smaller one
-
-	Each of these ratios is then turned into a 0-100 score by calculating: 100 - (100 * abs (1 - Val))
-
-	3.   To determine distance, measure pixels from top of top bounding box to bottom of bottom bounding box
-
-	distance = Target height in ft. (10/12) * YRes / (2*PixelHeight*tan(viewAngle of camera)) */
 				}
 			}
 		});
