@@ -13,7 +13,11 @@ public class Vision extends Subsystem
 	//And FULL_VIEW_PX is out width resolution
 	private final float TARGET_FEET = 1.25f, CAMERA_ANGLE = 46.46f, FULL_VIEW_PX = Robot.IMG_WIDTH;
 	
-    public float getDistance()
+	//This is the distance we want to be from the target it feet
+	//TODO: Find appropriate distance from target
+	private final float wantedDistanceInFeet = 12.0f;
+	
+    private float getDistance()
     {
     	//Use floats, they're way more accurate (AKA: doubles are the devil)
     	float targetWidthPx, feetPxRatio, fullFiewInFeet, halfOfView, distance;	
@@ -34,7 +38,7 @@ public class Vision extends Subsystem
     	return distance;
     }
     
-    //Determines which direction to move the motor
+    //Determines whether or not the robot is too much to the left, or the right of the tape
     public int center()
     {
     	if(Robot.centerX < center)
@@ -62,6 +66,34 @@ public class Vision extends Subsystem
 			return false;
 		}
     	
+    }
+    
+    //Determines whether or not the robot is too far forward, or back from the target
+    public int position()
+    {
+    	if(getDistance() < center)
+    	{
+    		//Returns 1 if the robot needs to move forward
+    		return 1;
+    	}
+    	else
+    	{
+    		//Returns -1 if the robot needs to move backwards
+    		return -1;
+    	}
+    }
+    
+    public boolean isPositioned()
+    {
+    	///+5 and -5 set a range for the distance to be in, since it will most likely not be exactly the right distance
+    	if(getDistance() < wantedDistanceInFeet + 5 && getDistance() > wantedDistanceInFeet -5)
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
     
     public void initDefaultCommand()

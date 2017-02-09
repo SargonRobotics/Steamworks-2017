@@ -2,6 +2,7 @@ package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.Drive;
+import org.usfirst.frc.team2335.robot.commands.PositionRobot;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.commands.Turn;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
@@ -28,6 +29,7 @@ public class OI
 		
 		///Buttons
 		JoystickButton center = new JoystickButton(controller, Robot.CENTER);
+		JoystickButton position = new JoystickButton(controller, Robot.POSITION);
 		
 		//Drive commands
 		strafe.whileActive(new Strafe());
@@ -36,6 +38,7 @@ public class OI
 		
 		//Vision commands
 		center.whenPressed(new CenterRobot());
+		position.whenPressed(new PositionRobot());
 	}
 	
 	public double getAxis(int axis, double max)
