@@ -6,14 +6,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 //TODO: Organize imports
 
-//TODO: FORMATTING FOR GODS SAKE
-public class AutoTurn extends Command {
+
+public class AutoTurn extends Command
+{
 
 	private int _turnVal;
     public AutoTurn(int turnVal) 
     {
         requires(Robot.driveTrain);
-        int _turnVal = turnVal;
+        _turnVal = turnVal;
         setTimeout(0); //TODO: Set correct timeout time. Value is amount of seconds until IsFinished returns true.
     }
     // Called just before this Command runs the first time
@@ -22,45 +23,36 @@ public class AutoTurn extends Command {
     	
     }
 
-    // Called repeatedly when this Command is scheduled to run
+    // Sets the motors to turn left or right based on the turnVal
     protected void execute()
     {
 		 if(_turnVal > 0)
 		 {
-			 Robot.driveTrain.turn(1); //TODO: get a good turn rate
+			 Robot.driveTrain.drive(1, 1); //TODO: Find a turn rate and replace the second value with it 
 		 }
 		 else
 		 {
-			 Robot.driveTrain.turn(-1);
+			 Robot.driveTrain.drive(1, -1); //TODO: replace -1 with the inverse of the previous value
     	 }
-    	//TODO:Formatting
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    // Ends the command when the timer runs out
     protected boolean isFinished() 
     {
     	
-    	if (isTimedOut() == true)
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		 return false;
-    	}
+    	return isTimedOut();
     	
     }
 
-    // Called once after isFinished returns true
+    // Stops the motors at the end of the command
     protected void end() 
     {
-    	Robot.driveTrain.turn(0);
+    	Robot.driveTrain.stopDrive();
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
+    // Ends the commannd
     protected void interrupted() 
     { 
-    	Robot.driveTrain.turn(0);
+    	end();
     }
 }

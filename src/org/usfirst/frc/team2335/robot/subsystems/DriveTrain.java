@@ -5,7 +5,7 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+//This page helps us set up the basic movement principles and once we get exact values we will imput them.
 public class DriveTrain extends Subsystem
 {
 	RobotDrive drive;

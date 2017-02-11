@@ -45,6 +45,18 @@ public class Ultrasound extends Subsystem
 		}
 	}
 	
+	public boolean inRange(double range)
+	{
+		if(range > Double.valueOf(getRange()))  //Determines if the robot has gone the specified range
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}	
+	}
+	
 	private void resetSensor()
 	{
 		//TODO: Add transistor functionality
