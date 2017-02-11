@@ -20,15 +20,14 @@ public class Robot extends IterativeRobot
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Buttons
-	public static final int SHOOT = 0;
-	//TODO: find controller port for shoot
+	public static final int SHOOT_BUTTON = 1;
 	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2; 
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
 	//Shooter motors:
-	public static final int SHOOTER_WHEEL = 3, FEEDER_WHEEL = 4;
-	//TODO: find ports for shooter and feeder motor
+	public static final int SHOOTER_MOTOR = 4, FEEDER_MOTOR = 0;
+	//TODO: Designate port for feeder motor
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;

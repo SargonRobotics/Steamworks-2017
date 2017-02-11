@@ -18,7 +18,7 @@ public class OI
 	public OI()
 	{
 		//Buttons
-		Button shootBall = new JoystickButton(controller, Robot.SHOOT);
+		Button shootBall = new JoystickButton(controller, Robot.SHOOT_BUTTON);
 		
 		//Axes
 		Axis strafe = new Axis(controller, Robot.STRAFE);

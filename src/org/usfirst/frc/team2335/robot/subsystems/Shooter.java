@@ -17,13 +17,14 @@ public class Shooter extends Subsystem
 		super();
 		
 		//Defines motors for the shooter
-		indexMotor = new Victor(Robot.FEEDER_WHEEL);
-		shooterMotor = new Victor(Robot.SHOOTER_WHEEL);	
+		indexMotor = new Victor(Robot.FEEDER_MOTOR);
+		shooterMotor = new Victor(Robot.SHOOTER_MOTOR);	
 	}
 		
 	//Shooter motor methods
 	public void shootBall()
 	{
+		//TODO: Find best speed for shooter motor
 		shooterMotor.set(0.6);
 	}
 	
