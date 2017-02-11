@@ -15,6 +15,8 @@ public class Ultrasound extends Subsystem
 	public Ultrasound()
 	{
 		reset = new DigitalOutput(Robot.RESET_PIN);
+		reset.set(true);
+		
 		ultra = new Ultrasonic(Robot.PULSE_PIN, Robot.ECHO_PIN);
 		ultra.setAutomaticMode(true);
 	}
@@ -49,8 +51,8 @@ public class Ultrasound extends Subsystem
 	
 	private void resetSensor()
 	{
-		reset.set(true);
 		reset.set(false);
+		reset.set(true);
 	}
 	   
 	public void initDefaultCommand()
