@@ -12,24 +12,24 @@ public class DriveTrain extends Subsystem
 	TalonSRX strafe;
 	
 	public DriveTrain()
-	{
+	{		
+		
 		drive = new RobotDrive(Robot.LEFT_PORT, Robot.RIGHT_PORT);
+		
+		//This makes it so there isn't the "Output not updated often enough" error spouted at us
+		drive.setSafetyEnabled(false);
+		
 		strafe = new TalonSRX(Robot.STRAFE_PORT);
     }
 	
-	public void drive(double moveVal)
-	{ 
-		drive.arcadeDrive(moveVal, 0);
+	public void drive(double moveVal, double rotateVal)
+	{
+		drive.arcadeDrive(moveVal, rotateVal);
 	}
-	
-	public void turn(double rotateVal)
-	{ 
-		drive.arcadeDrive(0, rotateVal);
-	} 
 	
 	public void stopDrive()
 	{
-		drive.arcadeDrive(0,0);
+		drive.arcadeDrive(0, 0);
 	}
 	
 	public void strafe(double strafeVal)
@@ -48,4 +48,3 @@ public class DriveTrain extends Subsystem
 		
 	}
 }
-
