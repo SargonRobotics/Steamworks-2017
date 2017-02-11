@@ -21,11 +21,11 @@ public class PositionRobot extends Command
     {
     	if(Robot.vision.position() == 1)
     	{
-    		Robot.driveTrain.drive(0.2);
+    		Robot.driveTrain.drive(0.2, 0);
     	}
     	else if(Robot.vision.position() == -1)
     	{
-    		Robot.driveTrain.drive(-0.2);
+    		Robot.driveTrain.drive(-0.2, 0);
     	}
     }
 

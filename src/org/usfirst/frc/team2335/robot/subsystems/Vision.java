@@ -17,7 +17,7 @@ public class Vision extends Subsystem
 	//TODO: Find appropriate distance from target
 	private final float wantedDistanceInFeet = 12.0f;
 	
-    private float getDistance()
+    public float getDistance()
     {
     	//Use floats, they're way more accurate (AKA: doubles are the devil)
     	float targetWidthPx, feetPxRatio, fullFiewInFeet, halfOfView, distance;	
