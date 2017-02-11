@@ -10,25 +10,16 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoTurn extends Command {
 
 	private int _turnVal;
-	//TODO: MAKE IT READABLE, EMPTY LINE HERE
     public AutoTurn(int turnVal) 
     {
         requires(Robot.driveTrain);
         int _turnVal = turnVal;
+        setTimeout(0); //TODO: Set correct timeout time. Value is amount of seconds until IsFinished returns true.
     }
-
     // Called just before this Command runs the first time
     protected void initialize() 
     {
-    	//How come setTimeout is used in the constructor in other commands, and in init here?
-    	//Keep it consistent, move it to the contructor
     	
-    	//TODO: FOR THE LOVE OF DEAD HIMSELF MAKE YOUR COMMENTS MEAN SOMETHING
-    	setTimeout(2); //TODO: set timeout time
-    	//WHAT DOES TIMEOUT TIME MEAN? WHAT DO YOU NEED TO SET IT TO?
-    	//WHY NOT DO IT NOW?
-    	
-    	//This code triggers me... don't to it again
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,23 +39,28 @@ public class AutoTurn extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() 
     {
-    	//This is all wrong, if you want the explination look in AutoStrafe
-/*    	if (isTimedOut() == true)
+    	
+    	if (isTimedOut() == true)
     	{
-    		Robot.driveTrain.turn(0);
+    		return true;
     	}
-        return false; */
+    	else
+    	{
+    		 return false;
+    	}
+    	
     }
 
     // Called once after isFinished returns true
     protected void end() 
     {
-    	//TODO: Add a function to stop our drive motors
+    	Robot.driveTrain.turn(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
-    protected void interrupted() { //TODO: Formatting
-    	//TODO: Run end() here
+    protected void interrupted() 
+    { 
+    	Robot.driveTrain.turn(0);
     }
 }
