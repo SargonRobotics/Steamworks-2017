@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 /bin/
+=======
+#Files to ignore, most of these are build files
+bin/*
+build/*
+dist/*
+sysProps.xml
+>>>>>>> master
