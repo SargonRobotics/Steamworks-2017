@@ -17,7 +17,7 @@ public class Shooter extends Subsystem
 		super();
 		
 		//Defines motors for the shooter
-		indexMotor = new Victor(Robot.FEEDER_MOTOR);
+		//indexMotor = new Victor(Robot.FEEDER_MOTOR); TODO: Uncomment when motor port correctly defined
 		shooterMotor = new Victor(Robot.SHOOTER_MOTOR);	
 	}
 		
