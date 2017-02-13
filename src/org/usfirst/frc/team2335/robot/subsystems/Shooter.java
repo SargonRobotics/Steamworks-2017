@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shooter extends Subsystem 
 {
 	//Motors for the shooter
-	Victor indexMotor;
-	Victor shooterMotor;
+	private Victor indexMotor;
+	private Victor shooterMotor;
+	
+	private double motorSpeed = 0.68;
 	
 	public Shooter()
 	{
@@ -25,7 +27,17 @@ public class Shooter extends Subsystem
 	public void shootBall()
 	{
 		//TODO: Find best speed for shooter motor
-		shooterMotor.set(0.6);
+		shooterMotor.set(motorSpeed);
+	}
+	
+	public void speedUp()
+	{
+		motorSpeed += 0.02;
+	}
+	
+	public void speedDown()
+	{
+		motorSpeed -= 0.02;
 	}
 	
 	public void stopBall()

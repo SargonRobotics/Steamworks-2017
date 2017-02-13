@@ -2,7 +2,7 @@ package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
-import org.usfirst.frc.team2335.robot.commands.ShootGroup;
+import org.usfirst.frc.team2335.robot.commands.StartShooter;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
@@ -44,7 +44,7 @@ public class OI
 		strafe.whileActive(new Strafe());
 		
 		//Shooter commands
-		shootBall.whileHeld(new ShootGroup());
+		shootBall.whileHeld(new StartShooter()); //Change to ShootGroup when build adds index
 				
 		//Drive commands
 		strafe.whileActive(new Strafe());

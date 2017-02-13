@@ -187,7 +187,19 @@ public class Robot extends IterativeRobot
     	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
     	
     	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 1));
-    	oi.printPOV();
+    	
+    	//Decreases or increases the speed of the shooter motor
+    	//If the d-pad buttons are pressed on the xbox controller
+    	
+    	//TODO: Test this method of incrementing the speed
+    	if(oi.xbox.getPOV() == 0)
+    	{
+    		shooter.speedUp();
+    	}
+    	else if(oi.xbox.getPOV() == 180)
+    	{
+    		shooter.speedDown();
+    	}
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))

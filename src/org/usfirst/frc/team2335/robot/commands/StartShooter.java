@@ -15,7 +15,7 @@ public class StartShooter extends Command {
     protected void initialize()
     {
     	//TODO: find real time needed for motor to rev up
-    	setTimeout(0.5);
+    	//setTimeout(0.5);
     }
 
     protected void execute() 
@@ -26,12 +26,13 @@ public class StartShooter extends Command {
 
     protected boolean isFinished()
     {
-        return isTimedOut();
+        //return isTimedOut();
+    	return false;
     }
 
     protected void end() 
     {
-    	
+    	Robot.shooter.stopBall(); //Remove after build adds index motor
     }
 
 
