@@ -1,26 +1,20 @@
 package org.usfirst.frc.team2335.robot.triggers;
 
-import org.usfirst.frc.team2335.robot.OI;
+import org.usfirst.frc.team2335.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 public class Axis extends Trigger
 {
-	//Constants
-	public static final double DEADZONE = 0.2;
-	
-	//Axes
-	public static final int MOVE = 1, ROTATE = 0;
-	
-	//Motors
-	public static final int LEFTDRIVE = 1, RIGHTDRIVE = 0, ARM = 8;
-
     //Variables to store joystick, and button values
+	private Joystick _joystick;
 	private int _axis;
 	
 	//Sets the variables to return
-	public Axis(int axis)
+	public Axis(Joystick joy, int axis)
 	{
+		_joystick = joy;
 		_axis = axis;
 	}
 	
@@ -29,7 +23,7 @@ public class Axis extends Trigger
 	//That means that command will run either once or while this get method is returning true
     public boolean get()
     {
-    	if(OI.getAxis(_axis, 1) > 0 || OI.getAxis(_axis, 1) < 0)
+    	if(_joystick.getRawAxis(_axis) < -Robot.DEADZONE || _joystick.getRawAxis(_axis) > Robot.DEADZONE)
     	{
     		return true;
     	}

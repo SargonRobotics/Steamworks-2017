@@ -182,7 +182,8 @@ public class Robot extends IterativeRobot
     	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
     	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
     	
-    	driveTrain.drive(OI.getAxis(MOVE, 1), OI.getAxis(ROTATE, 1));
+    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 1));
+    	oi.printPOV();
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
