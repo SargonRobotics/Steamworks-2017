@@ -32,6 +32,7 @@ public class StartShooter extends Command {
 
     protected void end() 
     {
+    	Robot.shooter.motorSpeed = 0.68;
     	Robot.shooter.stopBall(); //Remove after build adds index motor
     }
 

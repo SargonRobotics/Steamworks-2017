@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2335.robot;
 
+import java.sql.Driver;
+
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
@@ -8,6 +10,8 @@ import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
@@ -36,11 +40,14 @@ public class Robot extends IterativeRobot
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
-	//Buttons
+	//Joystick Buttons
 	public static final int SHOOT_BUTTON = 1, CENTER = 2, POSITION = 3;
 	
+	//Xbox Buttons
+	public static final int INTAKE_BUTTON = 1;
+	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, SHOOTER_MOTOR = 4, FEEDER_MOTOR = 0;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3;
 	//TODO: Designate port for feeder motor
 
 	//TODO: Remove extra newline.
@@ -200,6 +207,20 @@ public class Robot extends IterativeRobot
     	{
     		shooter.speedDown();
     	}
+    	
+    	if(DriverStation.getInstance().getMatchTime() <= 20 &&
+    			DriverStation.getInstance().getMatchTime() >= 18)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 1);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 1);    		
+    	}
+    	else if(DriverStation.getInstance().getMatchTime() == 17)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 0);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 0);    
+    	}
+    	
+    	SmartDashboard.putString("DB/String 9" , Double.toString(DriverStation.getInstance().getMatchTime()));
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
