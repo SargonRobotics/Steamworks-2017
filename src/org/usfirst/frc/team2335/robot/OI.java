@@ -1,17 +1,21 @@
 package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
+import org.usfirst.frc.team2335.robot.commands.PositionRobot;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //TODO: Rename to OperatorInterface after basic functionality for clarity.
 //This class connects operator control to different commands
 public class OI
 {	
-	static Joystick controller = new Joystick(0);
+	Joystick controller, xbox;
+	JoystickButton center, position;
+	Axis strafe;
 	
 	/**
 	 * OperatorInterface constructor. Always initialize last in robot init.
@@ -19,20 +23,26 @@ public class OI
 	 */
 	public OI()
 	{
+		//Joysticks
+		controller = new Joystick(0);
+		xbox = new Joystick(1);
+		
 		//Axes
-		Axis strafe = new Axis(Robot.STRAFE);
+		strafe = new Axis(controller, Robot.STRAFE);
 		
 		///Buttons
-		JoystickButton center = new JoystickButton(controller, Robot.CENTER);
-		
+		center = new JoystickButton(controller, Robot.CENTER);
+		position = new JoystickButton(controller, Robot.POSITION);
+				
 		//Drive commands
 		strafe.whileActive(new Strafe());
 		
 		//Vision commands
 		center.whenPressed(new CenterRobot());
+		position.whenPressed(new PositionRobot());
 	}
 	
-	public static double getAxis(int axis, double max)
+	public double getAxis(int axis, double max)
 	{
 		return deadzone(controller.getRawAxis(axis), max);
 	}
@@ -47,5 +57,10 @@ public class OI
 		
 		//Multiplies the controller value by the slope made from (y2 - y1) / (x2 - x1)
 		return ((max - 0) / ((1 - Robot.DEADZONE) - 0) * (amount - 0));
+	}
+	
+	public void printPOV()
+	{
+		SmartDashboard.putString("DB/String 5", Integer.toString(xbox.getPOV()));
 	}
 }

@@ -9,7 +9,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -37,7 +36,7 @@ public class Robot extends IterativeRobot
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Buttons
-	public static final int CENTER = 2;
+	public static final int CENTER = 2, POSITION = 3;
 	
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
@@ -177,13 +176,14 @@ public class Robot extends IterativeRobot
 	}
 
 	@Override
-	public void teleopPeriodic() //This function is called periodically during operator control
+	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
 		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
     	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
     	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
     	
-    	driveTrain.drive(OI.getAxis(MOVE, 1), OI.getAxis(ROTATE, 1));
+    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 1));
+    	oi.printPOV();
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))

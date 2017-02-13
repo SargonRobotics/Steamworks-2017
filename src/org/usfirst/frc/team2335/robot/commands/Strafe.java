@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2335.robot.commands;
 
-import org.usfirst.frc.team2335.robot.OI;
 import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,7 +18,7 @@ public class Strafe extends Command
     
     protected void execute() 
     {
-    	Robot.driveTrain.strafe(OI.getAxis(Robot.STRAFE, 1));
+    	Robot.driveTrain.strafe(Robot.oi.getAxis(Robot.STRAFE, 1));
     }
     
     protected boolean isFinished() 
