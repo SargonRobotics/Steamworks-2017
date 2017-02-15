@@ -33,13 +33,21 @@ public class DriveTrain extends Subsystem
 			leftMotorVal = -rotateVal; //The left motor is inverted so there's an actual rotation
 			rightMotorVal = rotateVal;
 		}
-		else //If we're moving, and trying to turn use these values
+		else if(moveVal > 0) //If we're moving forwards, and trying to turn use these values
 		{
 			//If we're trying to turn left  then get the inverse of the rotateVal, if not just use moveVal
 			leftMotorVal = (rotateVal > 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
 			
 			//If we're trying to turn right  then get the inverse of the rotateVal, if not just use moveVal
 			rightMotorVal = (rotateVal < 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+		}
+		else //If we're moving backwards, and trying to turn use these values
+		{
+			//If we're trying to turn left  then get the inverse of the rotateVal, if not just use moveVal
+			leftMotorVal = (rotateVal < 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+			
+			//If we're trying to turn right  then get the inverse of the rotateVal, if not just use moveVal
+			rightMotorVal = (rotateVal > 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
 		}
 		
 		if(rotateVal == 0 && moveVal == 0)

@@ -54,8 +54,6 @@ public class Robot extends IterativeRobot
 	Relay cameraLight;
 	
 	//Camera
-	//TODO: Read these off of the UsbCamera object after basic functionality.
-	//		Exclude CAMERA_ANGLE; we need to define that ourselves anyway.
 	public static final int IMG_WIDTH = 640, IMG_HEIGHT = 480;
 		
 	//Values tape
@@ -73,8 +71,24 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		//TODO: Possibly move the camera init to its own private function,
-		//		since it's longer and more complex.		
+		driveTrain = new DriveTrain();
+		vision = new Vision();
+		
+		//This one comes last or else your code dies just like you if you don't define it last
+		oi = new OperatorInterface();
+		
+		initCamera();
+		
+		cameraLight = new Relay(RELAY_PORT);
+		
+		//chooser.addDefault("Default Auto", new FindTape());		
+		//chooser.addDefault("Default Auto", new ExampleCommand());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", chooser);
+	}
+	
+	private void initCamera()
+	{
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
@@ -101,19 +115,6 @@ public class Robot extends IterativeRobot
 		
 		//Please for the love of god don't forget this line or else nothing works and I lose will to live
 		visionThread.start();
-		
-		driveTrain = new DriveTrain();
-		vision = new Vision();
-		
-		//This one comes last or else your code dies just like you if you don't define it last
-		oi = new OperatorInterface();
-		
-		cameraLight = new Relay(RELAY_PORT);
-		
-		//chooser.addDefault("Default Auto", new FindTape());		
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
 	}
 
 	@Override
