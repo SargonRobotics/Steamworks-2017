@@ -49,7 +49,7 @@ public class Shooter extends Subsystem
 	
 	public void startIntake()
 	{
-		intakeMotor.set(0.7);
+		intakeMotor.set(1);
 	}
 	
 	public void stopIntake()

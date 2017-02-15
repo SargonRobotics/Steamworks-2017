@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2335.robot;
 
-import java.sql.Driver;
-
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
