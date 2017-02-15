@@ -24,6 +24,8 @@ public class DriveTrain extends Subsystem
 	
 	public void drive(double moveVal, double rotateVal)
 	{	
+		//Inverts moveVal for correct driving use
+		
 		double leftMotorVal, rightMotorVal;
 		
 		if(moveVal == 0) //If the move value is zero, but we're trying to turn use these values
@@ -40,9 +42,17 @@ public class DriveTrain extends Subsystem
 			rightMotorVal = (rotateVal < 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
 		}
 		
-		//Drives the motors
-		leftDrive.set(leftMotorVal);
-		rightDrive.set(rightMotorVal);
+		if(rotateVal == 0 && moveVal == 0)
+		{
+			//If you stop moving the joystick it'll stop the drive train
+			stopDrive();
+		}
+		else
+		{
+			//Drives the motors
+			leftDrive.set(leftMotorVal);
+			rightDrive.set(rightMotorVal);
+		}
 	}
 	
 	public void stopDrive()

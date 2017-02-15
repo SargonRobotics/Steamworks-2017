@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //TODO: Rename to OperatorInterface after basic functionality for clarity.
 //This class connects operator control to different commands
-public class OI
+
+//TODO: Make sure the class still works after renamed
+public class OperatorInterface
 {	
 	Joystick controller, xbox;
 	JoystickButton center, position;
@@ -21,7 +23,7 @@ public class OI
 	 * OperatorInterface constructor. Always initialize last in robot init.
 	 * Otherwise, it will crash since TODO: FILL-IN REASON.
 	 */
-	public OI()
+	public OperatorInterface()
 	{
 		//Joysticks
 		controller = new Joystick(0);

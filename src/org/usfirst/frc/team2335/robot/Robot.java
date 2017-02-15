@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot
 	//Subsystems:
 	public static DriveTrain driveTrain;
 	public static Vision vision;
-	public static OI oi;
+	public static OperatorInterface oi;
 
 	//Relay
 	public static final int RELAY_PORT = 1;
@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot
 		vision = new Vision();
 		
 		//This one comes last or else your code dies just like you if you don't define it last
-		oi = new OI();
+		oi = new OperatorInterface();
 		
 		cameraLight = new Relay(RELAY_PORT);
 		
