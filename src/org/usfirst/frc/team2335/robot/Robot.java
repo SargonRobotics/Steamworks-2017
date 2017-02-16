@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot
 {	
 	//Buttons:
-	public static final int CLIMB = 1;
+	public static final int CLIMB = 4;
 	
 	//Constants:
 	public static final double DEADZONE = 0.2; //This value is to be edited for best fit
@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, CLIMB_PORT = 3;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, CLIMB_PORT = 6;
 	
 	
 	//Subsystems:

@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI
 {	
 	Joystick controller = new Joystick(0);
+	Joystick xbox = new Joystick(1);
 	
 	public OI()
 	{
 		//Buttons
-		Button climb = new JoystickButton(controller, Robot.CLIMB);
+		Button climb = new JoystickButton(xbox, Robot.CLIMB);
 		
 		//Axes
 		Axis strafe = new Axis(controller, Robot.STRAFE);

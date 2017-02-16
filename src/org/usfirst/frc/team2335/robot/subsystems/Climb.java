@@ -23,8 +23,6 @@ public class Climb extends Subsystem
 	public void startClimb()
 	{
 		climbMotor.set(1);
-		//TODO Find real value
-		//Using full power for now
 	}
 	
 	public void stopClimb()
