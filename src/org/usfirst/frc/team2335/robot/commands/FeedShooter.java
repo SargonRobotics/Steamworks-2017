@@ -5,8 +5,8 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 
-public class FeedShooter extends Command {
-
+public class FeedShooter extends Command
+{
     public FeedShooter() 
     {
         requires(Robot.shooter);
@@ -20,18 +20,21 @@ public class FeedShooter extends Command {
     protected void execute() 
     {
         //Turns on feed motor
+    	System.out.println("Running");
     	Robot.shooter.feedBall();
     }
 
     protected boolean isFinished() 
     {
-        return false;
+        return Robot.shooter.isShootButtonReleased();
     }
 
     protected void end()
     {
-        //Turns off feed motor
+        //Turns off feed motor and shooter motor
     	Robot.shooter.stopFeedBall();
+    	Robot.shooter.stopBall();
+    	Robot.shooter.motorSpeed = -0.68;
     }
 
 

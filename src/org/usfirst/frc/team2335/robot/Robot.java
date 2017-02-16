@@ -45,7 +45,8 @@ public class Robot extends IterativeRobot
 	public static final int INTAKE_BUTTON = 1;
 	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2,
+			SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3, FEEDER_MOTOR = 5;
 	//TODO: Designate port for feeder motor
 
 	//TODO: Remove extra newline.

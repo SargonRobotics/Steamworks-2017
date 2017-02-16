@@ -3,7 +3,7 @@ package org.usfirst.frc.team2335.robot;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.IntakeBalls;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
-import org.usfirst.frc.team2335.robot.commands.StartShooter;
+import org.usfirst.frc.team2335.robot.commands.ShootGroup;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
@@ -45,7 +45,7 @@ public class OI
 		strafe.whileActive(new Strafe());
 		
 		//Shooter commands
-		shootBall.whileHeld(new StartShooter()); //Change to ShootGroup when build adds index
+		shootBall.whileHeld(new ShootGroup()); //Change to ShootGroup when build adds index
 		
 		//Intake commands
 		intakeBalls.toggleWhenPressed(new IntakeBalls());
@@ -58,6 +58,11 @@ public class OI
 	public double getAxis(int axis, double max)
 	{		
 		return deadzone(controller.getRawAxis(axis), max);
+	}
+	
+	public boolean getShootButton()
+	{
+		return xbox.getRawButton(Robot.SHOOT_BUTTON);
 	}
 	
 	//TODO: Add javadoc-style comments to every function after a javadoc

@@ -3,24 +3,25 @@ package org.usfirst.frc.team2335.robot.subsystems;
 import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class Shooter extends Subsystem 
 {
 	//Motors for the shooter
-	//private TalonSRX indexMotor;
+	private Victor feederMotor;
 	private TalonSRX shooterMotor;
 	private TalonSRX intakeMotor;
 	
-	public double motorSpeed = 0.68;
+	public double motorSpeed = -0.68;
 	
 	public Shooter()
 	{
 		super();
 		
 		//Defines motors for the shooter
-		//indexMotor = new Victor(Robot.FEEDER_MOTOR); TODO: Uncomment when motor port correctly defined
+		feederMotor = new Victor(Robot.FEEDER_MOTOR);
 		shooterMotor = new TalonSRX(Robot.SHOOTER_MOTOR);	
 		intakeMotor = new TalonSRX(Robot.INTAKE_MOTOR);
 	}
@@ -34,12 +35,12 @@ public class Shooter extends Subsystem
 	
 	public void speedUp()
 	{
-		motorSpeed += 0.05;
+		motorSpeed -= 0.05;
 	}
 	
 	public void speedDown()
 	{
-		motorSpeed -= 0.05;
+		motorSpeed += 0.05;
 	}
 	
 	public void stopBall()
@@ -61,12 +62,17 @@ public class Shooter extends Subsystem
 	public void feedBall()
 	{
 		//TODO: find best speed for feed motor
-		//indexMotor.set(0.5);
+		feederMotor.set(-1);
 	}
 	
 	public void stopFeedBall()
 	{
-		//indexMotor.set(0);
+		feederMotor.set(0);
+	}
+	
+	public boolean isShootButtonReleased()
+	{
+		return Robot.oi.getShootButton();
 	}
     
     public void initDefaultCommand()
