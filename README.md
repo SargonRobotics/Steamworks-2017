@@ -23,8 +23,8 @@ We're using ultrasonic sensors to position our robot during autonomous.
 
 ## Todo
 A list of things our programming team is currently working on
-[ ] Fix our out of range problem with the ultrasonic sensors
-[ ] Find correct distances to use during auto
-[ ] Find offset for centering the robot based on the shooter
-[ ] Find correct shooting speed
-[ ] Test our drive code more in depth
+- [ ] Fix our out of range problem with the ultrasonic sensors
+- [ ] Find correct distances to use during auto
+- [ ] Find offset for centering the robot based on the shooter
+- [ ] Find correct shooting speed
+- [ ] Test our drive code more in depth
