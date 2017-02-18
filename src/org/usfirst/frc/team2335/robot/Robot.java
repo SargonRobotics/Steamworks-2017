@@ -108,12 +108,12 @@ public class Robot extends IterativeRobot
 		visionThread.start();
 		
 		driveTrain = new DriveTrain();
-		ultraSound = new Ultrasound();
 		vision = new Vision();
-		
+		ultraSound = new Ultrasound();
+	
 		//This one comes last or else your code dies just like you if you don't define it last
 		oi = new OI();
-		
+
 		cameraLight = new Relay(RELAY_PORT);
 		
 		//chooser.addDefault("Default Auto", new FindTape());		
@@ -184,8 +184,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
-		SmartDashboard.putString("DB/String 0", ultraSound.getRange());
-    	
+		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRange()));
+	
     	driveTrain.drive(OI.getAxis(MOVE, 1), OI.getAxis(ROTATE, 1));
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
