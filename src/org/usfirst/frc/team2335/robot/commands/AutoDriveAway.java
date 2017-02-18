@@ -4,11 +4,11 @@ import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AutoDrive extends Command 
+public class AutoDriveAway extends Command 
 {
 	private double _distance; //Creates distance passing parameter which is the distance that the ultrasonic needs to be from the wall
 	//Defines are 
-    public AutoDrive(double distance)
+    public AutoDriveAway(double distance)
     {
        requires(Robot.ultraSound);
        requires(Robot.driveTrain);
@@ -31,7 +31,7 @@ public class AutoDrive extends Command
     // Ends the command once the ultrasonic is far enough from the wall
     protected boolean isFinished()
     {
-    	return Robot.ultraSound.inRange(_distance);
+    	return Robot.ultraSound.atRange(_distance);
     }
 
     // Stops the motors at the end of the command

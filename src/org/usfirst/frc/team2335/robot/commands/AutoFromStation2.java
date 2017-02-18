@@ -8,6 +8,6 @@ public class AutoFromStation2 extends CommandGroup
     {
     	//TODO: get correct time and distance values. Current value is a placeholder
     	addSequential(new AutoStrafe());
-    	addSequential(new AutoDrive(0));    //passing  is the distance in inches at which the Ultrasonic stops the motor.
+    	addSequential(new AutoDriveTo());    //passing  is the distance in inches at which the Ultrasonic stops the motor.
     }
 }

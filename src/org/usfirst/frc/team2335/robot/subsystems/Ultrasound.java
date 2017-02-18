@@ -7,29 +7,36 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Ultrasound extends Subsystem
 {
-	Ultrasonic ultra;
+	Ultrasonic backUltra;
+	Ultrasonic frontUltra;
 
 	public Ultrasound()
 	{
-		ultra = new Ultrasonic(Robot.PULSE_PIN, Robot.ECHO_PIN);
-		ultra.setAutomaticMode(true);
+		backUltra = new Ultrasonic(Robot.BACK_PING, Robot.BACK_ECHO);		
+		frontUltra = new Ultrasonic(Robot.FRONT_PING, Robot.FRONT_ECHO);
+		
+		backUltra.setAutomaticMode(true);
+		frontUltra.setAutomaticMode(true);
 	}
 	
-	public double getRange()
+	public double getRangeBack()
 	{
-		return ultra.getRangeInches();
+		return backUltra.getRangeInches();
 	}
 	
-	public boolean inRange(double range)
+	public double getRangeFront()
 	{
-		if(range > Double.valueOf(getRange()))  //Determines if the robot has gone the specified range
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}	
+		return frontUltra.getRangeInches();
+	}
+	
+	public boolean atRange(double range)
+	{	
+		return range > getRangeBack() ? true : false;
+	}
+	
+	public boolean atZeroInches()
+	{
+		return getRangeFront() < 5 ? true : false;
 	}
 	   
 	public void initDefaultCommand()

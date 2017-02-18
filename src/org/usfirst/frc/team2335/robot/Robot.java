@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
 	//Ultrasonic ports:
-	public static final int ECHO_PIN = 0, PULSE_PIN = 1;
+	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
 
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
@@ -184,7 +184,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRange()));
+		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRangeBack()));
+		SmartDashboard.putString("DB/String 1", Double.toString(ultraSound.getRangeFront()));
 	
     	driveTrain.drive(OI.getAxis(MOVE, 1), OI.getAxis(ROTATE, 1));
     	
