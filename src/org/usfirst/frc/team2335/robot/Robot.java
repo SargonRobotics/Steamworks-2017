@@ -42,21 +42,18 @@ public class Robot extends IterativeRobot
 	public static final int CLIMB = 4;
 	
 	//Shooter buttons
-	public static final int SHOOT_BUTTON = 1;
+	public static final int SHOOT_BUTTON = 1, INTAKE_BUTTON = 1;
 	
 	//Vision buttons
 	public static final int CENTER = 2, POSITION = 3;
-	
-	//Ultrasonic ports:
-	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
-	
-	//Xbox Buttons
-	public static final int INTAKE_BUTTON = 1;
 	
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2,
 			SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3, FEEDER_MOTOR = 5,
 			CLIMB_PORT = 6;
+	
+	//Ultrasonic ports:
+	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
 
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
@@ -91,6 +88,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
+		
 		driveTrain = new DriveTrain();
 		climb = new Climb();
 		shooter = new Shooter();

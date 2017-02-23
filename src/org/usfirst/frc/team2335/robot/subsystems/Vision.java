@@ -16,7 +16,7 @@ public class Vision extends Subsystem
 	//This is the distance we want to be from the target it feet
 	//TODO: Find appropriate distance from target
 	private final float wantedDistanceInFeet = 12.0f;
-	
+
     public float getDistance()
     {
     	//Use floats, they're way more accurate (AKA: doubles are the devil)
