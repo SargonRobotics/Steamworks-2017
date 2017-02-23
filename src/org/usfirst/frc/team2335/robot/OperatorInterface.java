@@ -2,8 +2,10 @@ package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
+import org.usfirst.frc.team2335.robot.commands.IntakeBalls;
 import org.usfirst.frc.team2335.robot.commands.Lift;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
+import org.usfirst.frc.team2335.robot.commands.ShootGroup;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
 
@@ -20,6 +22,9 @@ public class OperatorInterface
 	
 	//Climb buttons
 	JoystickButton climb;
+	
+	//Shoot buttons
+	JoystickButton shootBall, intakeBalls;
 	
 	//Vision buttons
 	JoystickButton center, position;
@@ -47,6 +52,11 @@ public class OperatorInterface
 		//Climb buttons
 		climb = new JoystickButton(xbox, Robot.CLIMB);
 		
+		//Shoot buttons
+		shootBall = new JoystickButton(controller, Robot.SHOOT_BUTTON);
+		intakeBalls = new JoystickButton(xbox, Robot.INTAKE_BUTTON);
+
+		
 		//Vision buttons
 		center = new JoystickButton(controller, Robot.CENTER);
 		position = new JoystickButton(controller, Robot.POSITION);
@@ -57,11 +67,15 @@ public class OperatorInterface
 		//Drive commands
 		strafe.whileActive(new Strafe());
 		
-		//Auto test buttons
+		//Auto test commands
 		autoTest.whenPressed(new AutoFromStation1());
 		
-		//Climb buttons
+		//Climb commands
 		climb.whileHeld(new Lift());
+		
+		//Shoot commands
+		shootBall.whileHeld(new ShootGroup()); //Change to ShootGroup when build adds index
+		intakeBalls.toggleWhenPressed(new IntakeBalls());
 		
 		//Vision commands
 		center.whenPressed(new CenterRobot());
@@ -72,6 +86,12 @@ public class OperatorInterface
 	public double getAxis(int axis, double max)
 	{
 		return deadzone(controller.getRawAxis(axis), max);
+	}
+	
+	//Returns button value so the command group can quit when it shuts off
+	public boolean getShootButton()
+	{
+		return xbox.getRawButton(Robot.SHOOT_BUTTON);
 	}
 	
 	//TODO: Add javadoc-style comments to every function after a javadoc

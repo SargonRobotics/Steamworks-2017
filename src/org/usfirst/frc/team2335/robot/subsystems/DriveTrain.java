@@ -5,7 +5,7 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-//This page helps us set up the basic movement principles and once we get exact values we will imput them.
+
 public class DriveTrain extends Subsystem
 {
 	Victor leftDrive, rightDrive;
@@ -23,9 +23,7 @@ public class DriveTrain extends Subsystem
     }
 	
 	public void drive(double moveVal, double rotateVal)
-	{	
-		//Inverts moveVal for correct driving use
-		
+	{			
 		double leftMotorVal, rightMotorVal;
 		
 		if(moveVal == 0) //If the move value is zero, but we're trying to turn use these values

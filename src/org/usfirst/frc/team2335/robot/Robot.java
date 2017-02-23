@@ -4,6 +4,7 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.Shooter;
 import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
@@ -37,24 +38,33 @@ public class Robot extends IterativeRobot
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
+	//Climb buttons
+	public static final int CLIMB = 4;
+	
+	//Shooter buttons
+	public static final int SHOOT_BUTTON = 1;
+	
 	//Vision buttons
 	public static final int CENTER = 2, POSITION = 3;
 	
-	//Climb buttons
-	public static final int CLIMB = 4;
-
-	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, CLIMB_PORT = 6;
-	
 	//Ultrasonic ports:
 	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
+	
+	//Xbox Buttons
+	public static final int INTAKE_BUTTON = 1;
+	
+	//Motor ports:
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2,
+			SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3, FEEDER_MOTOR = 5,
+			CLIMB_PORT = 6;
 
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
 	
 	//Subsystems:
-	public static DriveTrain driveTrain;
 	public static Climb climb;
+	public static DriveTrain driveTrain;
+	public static Shooter shooter;
 	public static Vision vision;
 	public static Ultrasound ultraSound;
 	public static OperatorInterface oi;
@@ -83,6 +93,7 @@ public class Robot extends IterativeRobot
 	{
 		driveTrain = new DriveTrain();
 		climb = new Climb();
+		shooter = new Shooter();
 		ultraSound = new Ultrasound();
 		vision = new Vision();
 		
@@ -200,7 +211,36 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putString("DB/String 2", Double.toString(ultraSound.getRangeFront()));	
 		
     	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 0.6));
+    	//Decreases or increases the speed of the shooter motor
+    	//If the d-pad buttons are pressed on the xbox controller
     	
+    	
+    	//TODO: Set range of values for the motorSpeed, so we don't kill the motor
+    	if(oi.xbox.getPOV() == 0)
+    	{
+    		shooter.speedUp();
+    	}
+    	else if(oi.xbox.getPOV() == 180)
+    	{
+    		shooter.speedDown();
+    	}
+    	
+    	//TODO: Fix this logic
+    	/*
+    	if(DriverStation.getInstance().getMatchTime() <= 20 &&
+    			DriverStation.getInstance().getMatchTime() >= 18)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 1);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 1);    		
+    	}
+    	else if(DriverStation.getInstance().getMatchTime() == 17)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 0);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 0);    
+    	}
+    	
+    	SmartDashboard.putString("DB/String 9" , Double.toString(DriverStation.getInstance().getMatchTime()));
+    	*/
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
