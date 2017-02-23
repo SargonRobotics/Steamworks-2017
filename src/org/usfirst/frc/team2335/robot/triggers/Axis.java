@@ -15,6 +15,7 @@ public class Axis extends Trigger
 	public Axis(Joystick joy, int axis)
 	{
 		_joystick = joy;
+		_axis = axis;
 	}
 
 	//If the controller value isn't at 0, then it's seen as active

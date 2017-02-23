@@ -212,7 +212,6 @@ public class Robot extends IterativeRobot
     	//Decreases or increases the speed of the shooter motor
     	//If the d-pad buttons are pressed on the xbox controller
     	
-    	
     	//TODO: Set range of values for the motorSpeed, so we don't kill the motor
     	if(oi.xbox.getPOV() == 0)
     	{
