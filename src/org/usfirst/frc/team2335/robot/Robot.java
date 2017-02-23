@@ -92,7 +92,7 @@ public class Robot extends IterativeRobot
 		initCamera();
 		
 		//TODO: Get auto chooser working
-		
+
 		//chooser.addDefault("Default Auto", new FindTape());		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -127,9 +127,8 @@ public class Robot extends IterativeRobot
 		
 		//Please for the love of god don't forget this line or else nothing works and I lose will to live
 		visionThread.start();
-		
+	
 		cameraLight = new Relay(RELAY_PORT);
-
 	}
 
 	@Override
@@ -196,11 +195,12 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRangeBack()));
-		SmartDashboard.putString("DB/String 1", Double.toString(ultraSound.getRangeFront()));
-	
+		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
+		SmartDashboard.putString("DB/String 1", Double.toString(ultraSound.getRangeBack()));
+		SmartDashboard.putString("DB/String 2", Double.toString(ultraSound.getRangeFront()));	
+		
     	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 0.6));
-
+    	
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))

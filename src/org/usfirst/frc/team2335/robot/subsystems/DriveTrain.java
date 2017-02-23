@@ -2,26 +2,22 @@ package org.usfirst.frc.team2335.robot.subsystems;
 
 import org.usfirst.frc.team2335.robot.Robot;
 
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 //This page helps us set up the basic movement principles and once we get exact values we will imput them.
 public class DriveTrain extends Subsystem
 {
-	RobotDrive drive;
 	Victor leftDrive, rightDrive;
 	TalonSRX strafe;
 	
 	public DriveTrain()
-	{				
+	{		
 		leftDrive = new Victor(Robot.LEFT_PORT);
 		leftDrive.setInverted(false);
 		
 		rightDrive = new Victor(Robot.RIGHT_PORT);
 		rightDrive.setInverted(true);
-		
-		drive = new RobotDrive(leftDrive, rightDrive);
 		
 		strafe = new TalonSRX(Robot.STRAFE_PORT);
     }
