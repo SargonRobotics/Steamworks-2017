@@ -2,6 +2,7 @@ package org.usfirst.frc.team2335.robot;
 
 import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
+import org.usfirst.frc.team2335.robot.commands.Lift;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
 import org.usfirst.frc.team2335.robot.triggers.Axis;
@@ -13,7 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OperatorInterface
 {	
 	Joystick controller, xbox;
-	JoystickButton center, position, autoTest;
+	
+	//Auto test buttons
+	JoystickButton autoTest;
+	
+	//Climb buttons
+	JoystickButton climb;
+	
+	//Vision buttons
+	JoystickButton center, position;
 	Axis strafe;
 	
 	/**
@@ -23,6 +32,8 @@ public class OperatorInterface
 	 */
 	public OperatorInterface()
 	{
+		/**** Definitions ****/
+		
 		//Joysticks
 		controller = new Joystick(0);
 		xbox = new Joystick(1);
@@ -30,20 +41,32 @@ public class OperatorInterface
 		//Axes
 		strafe = new Axis(controller, Robot.STRAFE);
 		
-		///Buttons
+		//Auto test buttons
+		autoTest = new JoystickButton(xbox, 3);
+		
+		//Climb buttons
+		climb = new JoystickButton(xbox, Robot.CLIMB);
+		
+		//Vision buttons
 		center = new JoystickButton(controller, Robot.CENTER);
 		position = new JoystickButton(controller, Robot.POSITION);
-		autoTest = new JoystickButton(xbox, 3);
 				
+		
+		//**** Links to Commands ****/
+		
 		//Drive commands
 		strafe.whileActive(new Strafe());
+		
+		//Auto test buttons
+		autoTest.whenPressed(new AutoFromStation1());
+		
+		//Climb buttons
+		climb.whileHeld(new Lift());
 		
 		//Vision commands
 		center.whenPressed(new CenterRobot());
 		position.whenPressed(new PositionRobot());
 		
-		//Auto
-		autoTest.whenPressed(new AutoFromStation1());
 	}
 	
 	public double getAxis(int axis, double max)

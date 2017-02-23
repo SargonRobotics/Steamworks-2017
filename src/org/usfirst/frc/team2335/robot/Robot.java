@@ -2,6 +2,7 @@ package org.usfirst.frc.team2335.robot;
 
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
@@ -36,11 +37,14 @@ public class Robot extends IterativeRobot
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
-	//Buttons
+	//Vision buttons
 	public static final int CENTER = 2, POSITION = 3;
 	
+	//Climb buttons
+	public static final int CLIMB = 4;
+
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2, CLIMB_PORT = 6;
 	
 	//Ultrasonic ports:
 	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
@@ -50,6 +54,7 @@ public class Robot extends IterativeRobot
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
+	public static Climb climb;
 	public static Vision vision;
 	public static Ultrasound ultraSound;
 	public static OperatorInterface oi;
@@ -77,6 +82,7 @@ public class Robot extends IterativeRobot
 	public void robotInit() //Runs once to initialize all global variables
 	{
 		driveTrain = new DriveTrain();
+		climb = new Climb();
 		ultraSound = new Ultrasound();
 		vision = new Vision();
 		
@@ -86,6 +92,7 @@ public class Robot extends IterativeRobot
 		initCamera();
 		
 		//TODO: Get auto chooser working
+		
 		//chooser.addDefault("Default Auto", new FindTape());		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
