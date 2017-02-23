@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2335.robot;
 
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
 import org.usfirst.frc.team2335.robot.commands.Strafe;
@@ -9,19 +10,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//TODO: Rename to OperatorInterface after basic functionality for clarity.
-//This class connects operator control to different commands
-public class OI
+public class OperatorInterface
 {	
 	Joystick controller, xbox;
-	JoystickButton center, position;
+	JoystickButton center, position, autoTest;
 	Axis strafe;
 	
 	/**
 	 * OperatorInterface constructor. Always initialize last in robot init.
-	 * Otherwise, it will crash since TODO: FILL-IN REASON.
+	 * Otherwise, it will crash since the OI file will try to access other subsystems once initialized.
+	 * So if all the other subsystems aren't defined prior the code will crash.
 	 */
-	public OI()
+	public OperatorInterface()
 	{
 		//Joysticks
 		controller = new Joystick(0);
@@ -33,6 +33,7 @@ public class OI
 		///Buttons
 		center = new JoystickButton(controller, Robot.CENTER);
 		position = new JoystickButton(controller, Robot.POSITION);
+		autoTest = new JoystickButton(xbox, 3);
 				
 		//Drive commands
 		strafe.whileActive(new Strafe());
@@ -40,6 +41,9 @@ public class OI
 		//Vision commands
 		center.whenPressed(new CenterRobot());
 		position.whenPressed(new PositionRobot());
+		
+		//Auto
+		autoTest.whenPressed(new AutoFromStation1());
 	}
 	
 	public double getAxis(int axis, double max)

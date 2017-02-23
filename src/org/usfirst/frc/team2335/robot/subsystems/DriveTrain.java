@@ -4,37 +4,78 @@ import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+//This page helps us set up the basic movement principles and once we get exact values we will imput them.
 public class DriveTrain extends Subsystem
 {
 	RobotDrive drive;
+	Victor leftDrive, rightDrive;
 	TalonSRX strafe;
 	
 	public DriveTrain()
-	{		
+	{				
+		leftDrive = new Victor(Robot.LEFT_PORT);
+		leftDrive.setInverted(false);
 		
-		drive = new RobotDrive(Robot.LEFT_PORT, Robot.RIGHT_PORT);
+		rightDrive = new Victor(Robot.RIGHT_PORT);
+		rightDrive.setInverted(true);
 		
-		//This makes it so there isn't the "Output not updated often enough" error spouted at us
-		drive.setSafetyEnabled(false);
+		drive = new RobotDrive(leftDrive, rightDrive);
 		
 		strafe = new TalonSRX(Robot.STRAFE_PORT);
     }
 	
 	public void drive(double moveVal, double rotateVal)
-	{
-		drive.arcadeDrive(moveVal, rotateVal);
+	{	
+		//Inverts moveVal for correct driving use
+		
+		double leftMotorVal, rightMotorVal;
+		
+		if(moveVal == 0) //If the move value is zero, but we're trying to turn use these values
+		{
+			leftMotorVal = -rotateVal; //The left motor is inverted so there's an actual rotation
+			rightMotorVal = rotateVal;
+		}
+		else if(moveVal > 0) //If we're moving forwards, and trying to turn use these values
+		{
+			//If we're trying to turn left  then get the inverse of the rotateVal, if not just use moveVal
+			leftMotorVal = (rotateVal > 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+			
+			//If we're trying to turn right  then get the inverse of the rotateVal, if not just use moveVal
+			rightMotorVal = (rotateVal < 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+		}
+		else //If we're moving backwards, and trying to turn use these values
+		{
+			//If we're trying to turn left  then get the inverse of the rotateVal, if not just use moveVal
+			leftMotorVal = (rotateVal < 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+			
+			//If we're trying to turn right  then get the inverse of the rotateVal, if not just use moveVal
+			rightMotorVal = (rotateVal > 0) ? (moveVal * (1 - Math.abs(rotateVal))) : moveVal;
+		}
+		
+		if(rotateVal == 0 && moveVal == 0)
+		{
+			//If you stop moving the joystick it'll stop the drive train
+			stopDrive();
+		}
+		else
+		{
+			//Drives the motors
+			leftDrive.set(leftMotorVal);
+			rightDrive.set(rightMotorVal);
+		}
 	}
 	
 	public void stopDrive()
 	{
-		drive.arcadeDrive(0, 0);
+		leftDrive.set(0);
+		rightDrive.set(0);
 	}
 	
 	public void strafe(double strafeVal)
 	{ 
-		strafe.set(strafeVal);
+		strafe.set(-strafeVal);
 	}
 	
 	public void stopStrafe()

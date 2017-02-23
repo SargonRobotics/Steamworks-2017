@@ -3,6 +3,7 @@ package org.usfirst.frc.team2335.robot;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
@@ -41,21 +42,23 @@ public class Robot extends IterativeRobot
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
 	
+	//Ultrasonic ports:
+	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
+
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
 	
 	//Subsystems:
 	public static DriveTrain driveTrain;
 	public static Vision vision;
-	public static OI oi;
+	public static Ultrasound ultraSound;
+	public static OperatorInterface oi;
 
 	//Relay
 	public static final int RELAY_PORT = 1;
 	Relay cameraLight;
 	
 	//Camera
-	//TODO: Read these off of the UsbCamera object after basic functionality.
-	//		Exclude CAMERA_ANGLE; we need to define that ourselves anyway.
 	public static final int IMG_WIDTH = 640, IMG_HEIGHT = 480;
 		
 	//Values tape
@@ -73,8 +76,24 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		//TODO: Possibly move the camera init to its own private function,
-		//		since it's longer and more complex.		
+		driveTrain = new DriveTrain();
+		ultraSound = new Ultrasound();
+		vision = new Vision();
+		
+		//This one comes last or else your code dies just like you if you don't define it last
+		oi = new OperatorInterface();
+		
+		initCamera();
+		
+		//TODO: Get auto chooser working
+		//chooser.addDefault("Default Auto", new FindTape());		
+		//chooser.addDefault("Default Auto", new ExampleCommand());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", chooser);
+	}
+	
+	private void initCamera()
+	{
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
@@ -102,18 +121,8 @@ public class Robot extends IterativeRobot
 		//Please for the love of god don't forget this line or else nothing works and I lose will to live
 		visionThread.start();
 		
-		driveTrain = new DriveTrain();
-		vision = new Vision();
-		
-		//This one comes last or else your code dies just like you if you don't define it last
-		oi = new OI();
-		
 		cameraLight = new Relay(RELAY_PORT);
-		
-		//chooser.addDefault("Default Auto", new FindTape());		
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+
 	}
 
 	@Override
@@ -173,17 +182,18 @@ public class Robot extends IterativeRobot
 		{
 			autonomousCommand.cancel();
 		}
+		
+		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRangeBack()));
 	}
 
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
-    	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
-    	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
-    	
-    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 1));
-    	oi.printPOV();
+		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRangeBack()));
+		SmartDashboard.putString("DB/String 1", Double.toString(ultraSound.getRangeFront()));
+	
+    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 0.6));
+
     	
     	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
     	if(SmartDashboard.getBoolean("DB/Button 0", false))
@@ -197,7 +207,7 @@ public class Robot extends IterativeRobot
     		cameraLight.set(Relay.Value.kOff);
     	}
     	
-		Scheduler.getInstance().run();
+    	Scheduler.getInstance().run();
 	}
 
 	@Override
