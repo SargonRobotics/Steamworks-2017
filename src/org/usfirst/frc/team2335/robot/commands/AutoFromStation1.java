@@ -6,11 +6,11 @@ public class AutoFromStation1 extends CommandGroup
 { 
     public AutoFromStation1() 
     {
-    	//TODO: get correct time and distance values for the following. Current values are placeholders.
+    	//TODO: Use gyro to work correctly
     	
-    	//TODO: Set AutoTurn
-    	addSequential(new AutoDriveAway(98)); //passing  is the distance in inches at which the Ultrasonic stops the motor.
-    	addSequential(new AutoTurn(0)); //Value is which direction the motor turns.
+    	addSequential(new ReleaseGearHold());
+    	addSequential(new AutoDriveAway(85)); //passing  is the distance in inches at which the Ultrasonic stops the motor.
+    	addSequential(new AutoTurn(1)); //Value is which direction the motor turns.
     	addSequential(new AutoDriveTo());
     }  
 }

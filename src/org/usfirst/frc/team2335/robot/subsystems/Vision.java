@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Vision extends Subsystem
 {      
 	//Value for finding the center of the camera (width resolution divided by 2)
-	private int center = Robot.IMG_WIDTH / 2;
+	private int center = 383;
 	
 	//TARGET_FEET is out target width in feet, CAMERA_ANGLE is our full view angle
 	//And FULL_VIEW_PX is out width resolution

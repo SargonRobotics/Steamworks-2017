@@ -2,6 +2,10 @@ package org.usfirst.frc.team2335.robot;
 
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation2;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation3;
+import org.usfirst.frc.team2335.robot.commands.AutoSraightGroup;
 import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2335.robot.subsystems.Shooter;
@@ -10,6 +14,7 @@ import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
@@ -54,6 +59,8 @@ public class Robot extends IterativeRobot
 	
 	//Ultrasonic ports:
 	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
+	
+	public static final int JOYSTICK = 0, XBOX = 1;
 
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
@@ -88,7 +95,6 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		
 		driveTrain = new DriveTrain();
 		climb = new Climb();
 		shooter = new Shooter();
@@ -97,17 +103,17 @@ public class Robot extends IterativeRobot
 		
 		//This one comes last or else your code dies just like you if you don't define it last
 		oi = new OperatorInterface();
-		
+				
 		initCamera();
-		
-		//TODO: Get auto chooser working
 
-		//chooser.addDefault("Default Auto", new FindTape());		
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		chooser.addDefault("Straight", new AutoSraightGroup());
+		chooser.addObject("Left", new AutoFromStation1());
+		chooser.addObject("Center", new AutoFromStation2());
+		chooser.addObject("Right", new AutoFromStation3());
+		
+		SmartDashboard.putData("Auto Command:", chooser);
 	}
-	
+		
 	private void initCamera()
 	{
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -143,12 +149,12 @@ public class Robot extends IterativeRobot
 	@Override
 	public void disabledInit() //Called when robot enters disabled mode. Used for reseting any values.
 	{
-
+    	cameraLight.set(Relay.Value.kOff);
 	}
 
 	@Override
 	public void disabledPeriodic()
-	{
+	{	
 		Scheduler.getInstance().run();
 	}
 
@@ -167,7 +173,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousInit()
 	{
-		autonomousCommand = (Command) chooser.getSelected();
+		//autonomousCommand = (Command) chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -175,6 +181,10 @@ public class Robot extends IterativeRobot
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
+		
+		String autoSelected = SmartDashboard.getString("Auto", "Default");
+		
+		DriverStation.reportWarning(("Starting Auto: " + autoSelected), true);
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -186,6 +196,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousPeriodic()
 	{
+		SmartDashboard.putString("Front Range: ", Double.toString(ultraSound.getRangeFront()));	
 		Scheduler.getInstance().run();
 	}
 
@@ -196,30 +207,41 @@ public class Robot extends IterativeRobot
 		if (autonomousCommand != null)
 		{
 			autonomousCommand.cancel();
-		}
-		
-		SmartDashboard.putString("DB/String 0", Double.toString(ultraSound.getRangeBack()));
+		}	
 	}
 
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
-		SmartDashboard.putString("DB/String 1", Double.toString(ultraSound.getRangeBack()));
-		SmartDashboard.putString("DB/String 2", Double.toString(ultraSound.getRangeFront()));	
+		SmartDashboard.putString("Center: ", Double.toString(centerX));
+		SmartDashboard.putString("Back Range: ", Double.toString(ultraSound.getRangeBack()));
+		SmartDashboard.putString("Front Range: ", Double.toString(ultraSound.getRangeFront()));	
 		
-    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 0.6));
+    	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 1));
+    	
     	//Decreases or increases the speed of the shooter motor
     	//If the d-pad buttons are pressed on the xbox controller
-    	
-    	//TODO: Set range of values for the motorSpeed, so we don't kill the motor
-    	if(oi.xbox.getPOV() == 0)
+    	if(oi.xbox.getPOV() == 0 && shooter.motorSpeed > -1)
     	{
-    		shooter.speedUp();
+    		if(shooter.motorSpeed - 0.05 < -1)
+    		{
+    			shooter.motorSpeed = -1;
+    		}
+    		else
+    		{
+    			shooter.speedUp();
+    		}
     	}
-    	else if(oi.xbox.getPOV() == 180)
+    	else if(oi.xbox.getPOV() == 180 && shooter.motorSpeed < 0)
     	{
-    		shooter.speedDown();
+    		if(shooter.motorSpeed + 0.05 < 0)
+    		{
+    			shooter.motorSpeed = 0;
+    		}
+    		else
+    		{
+    			shooter.speedDown();
+    		}
     	}
     	
     	//TODO: Fix this logic
@@ -239,17 +261,8 @@ public class Robot extends IterativeRobot
     	SmartDashboard.putString("DB/String 9" , Double.toString(DriverStation.getInstance().getMatchTime()));
     	*/
     	
-    	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
-    	if(SmartDashboard.getBoolean("DB/Button 0", false))
-    	{
-    		//If so, then it turns the light on
-    		//Use kForward instead of kOn because kForward uses GND and +12V, where as kOn uses +12V and -12V
-    		cameraLight.set(Relay.Value.kForward);
-    	}
-    	else
-    	{
-    		cameraLight.set(Relay.Value.kOff);
-    	}
+    	//cameraLight.set(Relay.Value.kForward);
+
     	
     	Scheduler.getInstance().run();
 	}

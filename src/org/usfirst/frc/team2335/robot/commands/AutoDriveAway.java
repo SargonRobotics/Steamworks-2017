@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoDriveAway extends Command 
 {
 	private double _distance; //Creates distance passing parameter which is the distance that the ultrasonic needs to be from the wall
+	
 	//Defines are 
     public AutoDriveAway(double distance)
     {
@@ -20,14 +21,13 @@ public class AutoDriveAway extends Command
     // Called just before this Command runs the first time, We don't need to do anything
     protected void initialize() 
     {
-    	DriverStation.reportWarning("Started", true);
-    	DriverStation.reportWarning(Double.toString(_distance), true);
+    	
     }
 
     // Sets the motors to drive
     protected void execute() 
     {
-    	Robot.driveTrain.drive(0.5, 0); //TODO: Find the correct drive speed to put in place of 0.5
+    	Robot.driveTrain.drive(0.6, 0); //TODO: Find the correct drive speed to put in place of 0.5
     }
 
     // Ends the command once the ultrasonic is far enough from the wall

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2335.robot;
 
-import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
+import org.usfirst.frc.team2335.robot.commands.AutoTurn;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.IntakeBalls;
 import org.usfirst.frc.team2335.robot.commands.Lift;
@@ -28,7 +28,7 @@ public class OperatorInterface
 	
 	//Vision buttons
 	JoystickButton center, position;
-	Axis strafe;
+	Axis strafe, strafeXbox;
 	
 	/**
 	 * OperatorInterface constructor. Always initialize last in robot init.
@@ -45,6 +45,7 @@ public class OperatorInterface
 		
 		//Axes
 		strafe = new Axis(controller, Robot.STRAFE);
+		strafeXbox = new Axis(xbox, Robot.STRAFE);
 		
 		//Auto test buttons
 		autoTest = new JoystickButton(xbox, 3);
@@ -65,10 +66,12 @@ public class OperatorInterface
 		//**** Links to Commands ****/
 		
 		//Drive commands
-		strafe.whileActive(new Strafe());
+		strafe.whileActive(new Strafe(Robot.JOYSTICK));
+		strafeXbox.whileActive(new Strafe(Robot.XBOX));
+		
 		
 		//Auto test commands
-		autoTest.whenPressed(new AutoFromStation1());
+		autoTest.whenPressed(new AutoTurn(-1));
 		
 		//Climb commands
 		climb.whileHeld(new Lift());
@@ -83,9 +86,9 @@ public class OperatorInterface
 		
 	}
 	
-	public double getAxis(int axis, double max)
+	public double getAxis(int joy, int axis, double max)
 	{
-		return deadzone(controller.getRawAxis(axis), max);
+		return joy == 0 ? deadzone(controller.getRawAxis(axis), max) : deadzone(xbox.getRawAxis(axis), max);
 	}
 	
 	//Returns button value so the command group can quit when it shuts off

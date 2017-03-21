@@ -9,6 +9,9 @@ public class Ultrasound extends Subsystem
 {
 	Ultrasonic backUltra;
 	Ultrasonic frontUltra;
+	
+	//Make sure this value is accurate, so you don't make your team lose like Jack did
+	double rangeCompensation = 26.5;
 
 	public Ultrasound()
 	{
@@ -32,12 +35,12 @@ public class Ultrasound extends Subsystem
 	public boolean atRange(double range)
 	{	
 		//TODO: Fine tune values
-		return (range - 10) < getRangeBack() && getRangeBack() < (range + 20) ? true : false;
+		return getRangeBack() > (range - rangeCompensation) ? true : false;
 	}
 	
 	public boolean atZeroInches()
 	{
-		return getRangeFront() > 15 ? true : false;
+		return getRangeFront() < (rangeCompensation + 5) ? true : false;
 	}
 	   
 	public void initDefaultCommand()

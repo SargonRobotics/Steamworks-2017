@@ -12,10 +12,10 @@ public class AutoTurn extends Command
 	
     public AutoTurn(int turnVal) 
     {
-        _turnVal = turnVal > 0 ? 0.3 : -0.3;
+        _turnVal = turnVal > 0 ? 0.35 : -0.35;
         
         requires(Robot.driveTrain);
-        setTimeout(0.5); //TODO: Set correct timeout time. Value is amount of seconds until IsFinished returns true.
+        setTimeout(1.7); //TODO: Set correct timeout time. Value is amount of seconds until IsFinished returns true.
     }
     // Called just before this Command runs the first time
     protected void initialize() 

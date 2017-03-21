@@ -6,11 +6,9 @@ public class AutoFromStation2 extends CommandGroup
 {    
     public AutoFromStation2() 
     {
-    	//TODO: get correct time and distance values. Current value is a placeholder
-    	
-    	//TODO: Find strafe value
-    	
-    	addSequential(new AutoStrafe());
-    	addSequential(new AutoDriveTo());    //passing  is the distance in inches at which the Ultrasonic stops the motor.
+    	//TODO: Implement gyro to work correctly
+
+    	addSequential(new ReleaseGearHold());
+    	addSequential(new AutoDriveTo()); 
     }
 }
