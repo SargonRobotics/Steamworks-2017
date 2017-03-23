@@ -8,6 +8,7 @@ import org.usfirst.frc.team2335.robot.commands.AutoFromStation3;
 import org.usfirst.frc.team2335.robot.commands.AutoSraightGroup;
 import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.GyroPID;
 import org.usfirst.frc.team2335.robot.subsystems.Shooter;
 import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
@@ -68,6 +69,7 @@ public class Robot extends IterativeRobot
 	//Subsystems:
 	public static Climb climb;
 	public static DriveTrain driveTrain;
+	public static GyroPID gyroPID;
 	public static Shooter shooter;
 	public static Vision vision;
 	public static Ultrasound ultraSound;
@@ -97,6 +99,7 @@ public class Robot extends IterativeRobot
 	{
 		driveTrain = new DriveTrain();
 		climb = new Climb();
+		gyroPID = new GyroPID();
 		shooter = new Shooter();
 		ultraSound = new Ultrasound();
 		vision = new Vision();
@@ -112,6 +115,7 @@ public class Robot extends IterativeRobot
 		chooser.addObject("Right", new AutoFromStation3());
 		
 		SmartDashboard.putData("Auto Command:", chooser);
+		SmartDashboard.putData("GyroPID", gyroPID.getPIDController());
 	}
 		
 	private void initCamera()
@@ -150,6 +154,7 @@ public class Robot extends IterativeRobot
 	public void disabledInit() //Called when robot enters disabled mode. Used for reseting any values.
 	{
     	cameraLight.set(Relay.Value.kOff);
+    	gyroPID.disable();
 	}
 
 	@Override
@@ -207,7 +212,10 @@ public class Robot extends IterativeRobot
 		if (autonomousCommand != null)
 		{
 			autonomousCommand.cancel();
-		}	
+		}
+
+		gyroPID.reset();
+		gyroPID.enable();
 	}
 
 	@Override
@@ -216,6 +224,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putString("Center: ", Double.toString(centerX));
 		SmartDashboard.putString("Back Range: ", Double.toString(ultraSound.getRangeBack()));
 		SmartDashboard.putString("Front Range: ", Double.toString(ultraSound.getRangeFront()));	
+		SmartDashboard.putString("Gyro: ", Double.toString(gyroPID.getAngle()));
 		
     	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 1));
     	

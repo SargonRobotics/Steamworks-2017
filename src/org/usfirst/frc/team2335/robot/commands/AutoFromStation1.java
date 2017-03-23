@@ -6,7 +6,7 @@ public class AutoFromStation1 extends CommandGroup
 { 
     public AutoFromStation1() 
     {
-    	//TODO: Use gyro to work correctly
+    	//TODO: Implement gyro to work correctly
     	
     	addSequential(new ReleaseGearHold());
     	addSequential(new AutoDriveAway(85)); //passing  is the distance in inches at which the Ultrasonic stops the motor.
