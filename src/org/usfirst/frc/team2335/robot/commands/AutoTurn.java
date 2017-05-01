@@ -12,33 +12,35 @@ public class AutoTurn extends Command
 	
     public AutoTurn(int turnVal) 
     {
-        _turnVal = turnVal > 0 ? 0.35 : -0.35;
+        _turnVal = turnVal > 0 ? 45 : -45;
         
         requires(Robot.driveTrain);
-        setTimeout(1.7); //TODO: Set correct timeout time. Value is amount of seconds until IsFinished returns true.
+        requires(Robot.gyroPID);
     }
     // Called just before this Command runs the first time
     protected void initialize() 
-    {
-    	
+    {    	
+    	Robot.gyroPID.enable();    	
+    	Robot.gyroPID.setSetpoint(_turnVal);
     }
 
     // Sets the motors to turn left or right based on the turnVal
     protected void execute()
     {
-		 Robot.driveTrain.drive(0, _turnVal);
+		Robot.driveTrain.turnAuto();
     }
 
     // Ends the command when the timer runs out
     protected boolean isFinished() 
     {
-    	return isTimedOut();
+    	return Robot.gyroPID.isOnTarget();
     }
 
     // Stops the motors at the end of the command
     protected void end() 
     {
     	Robot.driveTrain.stopDrive();
+    	Robot.gyroPID.disable();
     }
 
     // Ends the commannd

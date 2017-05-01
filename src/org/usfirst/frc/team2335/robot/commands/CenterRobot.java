@@ -26,13 +26,13 @@ public class CenterRobot extends Command
     	else if(Robot.vision.center() == -1)
     	{
     		Robot.driveTrain.strafe(-0.2);
-    	}
+    	} 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-        return Robot.vision.isCentered();
+        return Robot.vision.isCentered();    
     }
 
     protected void end()
