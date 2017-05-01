@@ -7,44 +7,34 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Ultrasound extends Subsystem
 {
-	Ultrasonic backUltra;
-	Ultrasonic frontUltra;
-	
-	//Make sure this value is accurate, so you don't make your team lose like Jack did
-	double rangeCompensation = 26.5;
 
+	Ultrasonic frontUltra, backUltra;
+	
 	public Ultrasound()
 	{
-		backUltra = new Ultrasonic(Robot.BACK_PING, Robot.BACK_ECHO);		
 		frontUltra = new Ultrasonic(Robot.FRONT_PING, Robot.FRONT_ECHO);
+		backUltra = new Ultrasonic(Robot.BACK_PING, Robot.BACK_ECHO);
 		
-		backUltra.setAutomaticMode(true);
 		frontUltra.setAutomaticMode(true);
+		backUltra.setAutomaticMode(true);
 	}
 	
-	public double getRangeBack()
-	{
-		return backUltra.getRangeInches();
-	}
-	
-	public double getRangeFront()
+	public double getFrontRange()
 	{
 		return frontUltra.getRangeInches();
 	}
 	
-	public boolean atRange(double range)
-	{	
-		//TODO: Fine tune values
-		return getRangeBack() > (range - rangeCompensation) ? true : false;
-	}
-	
-	public boolean atZeroInches()
+	public double getBackRange()
 	{
-		return getRangeFront() < (rangeCompensation + 5) ? true : false;
+		return backUltra.getRangeInches();
 	}
-	   
-	public void initDefaultCommand()
-	{
-	        
-	}
+
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        //setDefaultCommand(new MySpecialCommand());
+    }
 }
+

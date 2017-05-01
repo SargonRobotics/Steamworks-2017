@@ -5,6 +5,7 @@ import org.usfirst.frc.team2335.robot.Robot;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem
 {
@@ -59,6 +60,29 @@ public class DriveTrain extends Subsystem
 			leftDrive.set(leftMotorVal);
 			rightDrive.set(rightMotorVal);
 		}
+	}
+	
+	public void driveToAuto()
+	{
+		drive(Robot.frontUltraPID.pidOutput, Robot.turnCorrectionPID.pidOutput);
+		SmartDashboard.putString("GyroPID", Double.toString(Robot.gyroPID.pidOutput));
+		SmartDashboard.putString("GyroPID-Set", Double.toString(Robot.gyroPID.getSetpoint()));
+		SmartDashboard.putString("UltraPID", Double.toString(Robot.frontUltraPID.pidOutput));
+	}
+	
+	public void driveAwayAuto()
+	{
+		drive(Robot.backUltraPID.pidOutput, Robot.turnCorrectionPID.pidOutput);
+		SmartDashboard.putString("GyroPID", Double.toString(Robot.gyroPID.pidOutput));
+		SmartDashboard.putString("GyroPID-Set", Double.toString(Robot.gyroPID.getSetpoint()));
+		SmartDashboard.putString("UltraPID", Double.toString(Robot.backUltraPID.pidOutput));
+	}
+	
+	//Test adding turnCompensation to the Robot.turnCorrectionPID.pidOutput if it's still going off a little
+	
+	public void turnAuto()
+	{
+		drive(0, Robot.gyroPID.pidOutput);
 	}
 	
 	public void stopDrive()

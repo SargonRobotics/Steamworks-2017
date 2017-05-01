@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-public class GyroPID extends PIDSubsystem
+public class TurnCorrectionPID extends PIDSubsystem
 {
 	ADXRS450_Gyro gyro;
 	PIDController pid;
@@ -13,15 +13,16 @@ public class GyroPID extends PIDSubsystem
 	double pidOutput = 0;
 	
 	public int amountOnTarget = 0;
+	public final double turnCompensation = 0.15;
 	
-	static double speed = 0.05, distance = 2.5;
+	static double speed = 0.3, distance = 2;
 	 	
 	private static final double kOscillationPeriod = 0.02;
 
     // Initialize your subsystem here
-    public GyroPID()
+    public TurnCorrectionPID()
     {    
-    	super("GyroPID", (speed / distance), 0.0, 0.0, 0.0, kOscillationPeriod);
+    	super("TurnCorrectionPID", (speed / distance), 0.0, 0.0, 0.0, kOscillationPeriod);
     	
     	setSetpoint(0.0);
     	setAbsoluteTolerance(0.5);

@@ -6,16 +6,18 @@ import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
 import org.usfirst.frc.team2335.robot.commands.AutoFromStation2;
 import org.usfirst.frc.team2335.robot.commands.AutoFromStation3;
 import org.usfirst.frc.team2335.robot.commands.AutoSraightGroup;
+import org.usfirst.frc.team2335.robot.subsystems.BackUltraPID;
 import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.FrontUltraPID;
 import org.usfirst.frc.team2335.robot.subsystems.GyroPID;
 import org.usfirst.frc.team2335.robot.subsystems.Shooter;
+import org.usfirst.frc.team2335.robot.subsystems.TurnCorrectionPID;
 import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
@@ -59,7 +61,7 @@ public class Robot extends IterativeRobot
 			CLIMB_PORT = 6;
 	
 	//Ultrasonic ports:
-	public static final int BACK_ECHO = 0, BACK_PING = 1, FRONT_ECHO = 3, FRONT_PING = 4;
+	public static final int BACK_ECHO = 8, BACK_PING = 9, FRONT_ECHO = 3, FRONT_PING = 4;
 	
 	public static final int JOYSTICK = 0, XBOX = 1;
 
@@ -70,9 +72,12 @@ public class Robot extends IterativeRobot
 	public static Climb climb;
 	public static DriveTrain driveTrain;
 	public static GyroPID gyroPID;
+	public static TurnCorrectionPID turnCorrectionPID;
 	public static Shooter shooter;
 	public static Vision vision;
-	public static Ultrasound ultraSound;
+	public static Ultrasound ultrasound;
+	public static FrontUltraPID frontUltraPID;
+	public static BackUltraPID backUltraPID;
 	public static OperatorInterface oi;
 
 	//Relay
@@ -100,8 +105,11 @@ public class Robot extends IterativeRobot
 		driveTrain = new DriveTrain();
 		climb = new Climb();
 		gyroPID = new GyroPID();
+		turnCorrectionPID = new TurnCorrectionPID();
 		shooter = new Shooter();
-		ultraSound = new Ultrasound();
+		ultrasound = new Ultrasound();
+		frontUltraPID = new FrontUltraPID();
+		backUltraPID = new BackUltraPID();
 		vision = new Vision();
 		
 		//This one comes last or else your code dies just like you if you don't define it last
@@ -124,6 +132,8 @@ public class Robot extends IterativeRobot
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
 		
+		cameraLight = new Relay(RELAY_PORT);
+		
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
 			if(!pipeline.filterContoursOutput().isEmpty())
@@ -145,9 +155,7 @@ public class Robot extends IterativeRobot
 		});
 		
 		//Please for the love of god don't forget this line or else nothing works and I lose will to live
-		visionThread.start();
-	
-		cameraLight = new Relay(RELAY_PORT);
+		visionThread.start();	
 	}
 
 	@Override
@@ -187,10 +195,9 @@ public class Robot extends IterativeRobot
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 		
-		String autoSelected = SmartDashboard.getString("Auto", "Default");
+		gyroPID.reset();
+		autonomousCommand = (Command) chooser.getSelected();
 		
-		DriverStation.reportWarning(("Starting Auto: " + autoSelected), true);
-
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 		{
@@ -201,7 +208,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousPeriodic()
 	{
-		SmartDashboard.putString("Front Range: ", Double.toString(ultraSound.getRangeFront()));	
+		SmartDashboard.putString("Front Range:", Double.toString(ultrasound.getBackRange()));	
+		SmartDashboard.putString("Back Range:", Double.toString(ultrasound.getBackRange()));	
 		Scheduler.getInstance().run();
 	}
 
@@ -221,12 +229,12 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
-		SmartDashboard.putString("Center: ", Double.toString(centerX));
-		SmartDashboard.putString("Back Range: ", Double.toString(ultraSound.getRangeBack()));
-		SmartDashboard.putString("Front Range: ", Double.toString(ultraSound.getRangeFront()));	
-		SmartDashboard.putString("Gyro: ", Double.toString(gyroPID.getAngle()));
+//		SmartDashboard.putString("Center:", Double.toString(centerX));
+//		SmartDashboard.putString("Back Range:", Double.toString(ultrasound.getBackRange()));
+//		SmartDashboard.putString("Front Range:", Double.toString(ultrasound.getFrontRange()));	
+//		SmartDashboard.putString("Gyro:", Double.toString(gyroPID.getAngle()));
 		
-    	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 1));
+    	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 0.8));
     	
     	//Decreases or increases the speed of the shooter motor
     	//If the d-pad buttons are pressed on the xbox controller

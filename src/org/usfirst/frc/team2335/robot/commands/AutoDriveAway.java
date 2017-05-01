@@ -12,35 +12,41 @@ public class AutoDriveAway extends Command
 	//Defines are 
     public AutoDriveAway(double distance)
     {
-       requires(Robot.ultraSound);
-       requires(Robot.driveTrain);
-       
-       _distance = distance; 
+		requires(Robot.backUltraPID);
+		requires(Robot.driveTrain);
+		   
+		_distance = distance; 
     }
 
     // Called just before this Command runs the first time, We don't need to do anything
     protected void initialize() 
     {
+    	Robot.backUltraPID.setSetpoint(_distance);
     	
+    	Robot.turnCorrectionPID.enable();
+    	Robot.backUltraPID.enable();
     }
 
     // Sets the motors to drive
     protected void execute() 
     {
-    	Robot.driveTrain.drive(0.6, 0); //TODO: Find the correct drive speed to put in place of 0.5
+    	Robot.driveTrain.driveAwayAuto();
     }
 
     // Ends the command once the ultrasonic is far enough from the wall
     protected boolean isFinished()
     {
-    	return Robot.ultraSound.atRange(_distance);
+    	return Robot.backUltraPID.isOnTarget();
     }
 
     // Stops the motors at the end of the command
     protected void end() 
     { 
-    	DriverStation.reportWarning("Finished", true);
     	Robot.driveTrain.stopDrive();
+    	Robot.gyroPID.disable();
+    	Robot.backUltraPID.disable();
+    	
+    	DriverStation.reportError("DONE", true);
     }
 
     // Ends command
