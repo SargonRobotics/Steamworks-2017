@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoDriveAway extends Command 
 {
-	private double _distance; //Creates distance passing parameter which is the distance that the ultrasonic needs to be from the wall
+	//Creates distance passing parameter which is the distance that the ultrasonic needs to be from the wall
+	private double _distance;
 	
 	//Defines are 
     public AutoDriveAway(double distance)
