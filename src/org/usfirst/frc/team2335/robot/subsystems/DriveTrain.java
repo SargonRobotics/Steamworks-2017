@@ -93,6 +93,7 @@ public class DriveTrain extends Subsystem
 	
 	public void strafe(double strafeVal)
 	{ 
+		//We use -strafeVal because of the way the motor is facing, it needs to be invetred
 		strafe.set(-strafeVal);
 	}
 	
