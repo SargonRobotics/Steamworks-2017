@@ -2,7 +2,18 @@ package org.usfirst.frc.team2335.robot;
 
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation1;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation2;
+import org.usfirst.frc.team2335.robot.commands.AutoFromStation3;
+import org.usfirst.frc.team2335.robot.commands.AutoSraightGroup;
+import org.usfirst.frc.team2335.robot.subsystems.BackUltraPID;
+import org.usfirst.frc.team2335.robot.subsystems.Climb;
 import org.usfirst.frc.team2335.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2335.robot.subsystems.FrontUltraPID;
+import org.usfirst.frc.team2335.robot.subsystems.GyroPID;
+import org.usfirst.frc.team2335.robot.subsystems.Shooter;
+import org.usfirst.frc.team2335.robot.subsystems.TurnCorrectionPID;
+import org.usfirst.frc.team2335.robot.subsystems.Ultrasound;
 import org.usfirst.frc.team2335.robot.subsystems.Vision;
 
 import edu.wpi.cscore.UsbCamera;
@@ -35,27 +46,45 @@ public class Robot extends IterativeRobot
 	//Axes:
 	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
 	
-	//Buttons
+	//Climb buttons
+	public static final int CLIMB = 4;
+	
+	//Shooter buttons
+	public static final int SHOOT_BUTTON = 1, INTAKE_BUTTON = 1;
+	
+	//Vision buttons
 	public static final int CENTER = 2, POSITION = 3;
 	
 	//Motor ports:
-	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2;
+	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2,
+			SHOOTER_MOTOR = 4, INTAKE_MOTOR = 3, FEEDER_MOTOR = 5,
+			CLIMB_PORT = 6;
 	
+	//Ultrasonic ports:
+	public static final int BACK_ECHO = 8, BACK_PING = 9, FRONT_ECHO = 3, FRONT_PING = 4;
+	
+	public static final int JOYSTICK = 0, XBOX = 1;
+
 	//TODO: Remove extra newline.
 	//TODO: Remove unnecessary TODO comment
 	
 	//Subsystems:
+	public static Climb climb;
 	public static DriveTrain driveTrain;
+	public static GyroPID gyroPID;
+	public static TurnCorrectionPID turnCorrectionPID;
+	public static Shooter shooter;
 	public static Vision vision;
-	public static OI oi;
+	public static Ultrasound ultrasound;
+	public static FrontUltraPID frontUltraPID;
+	public static BackUltraPID backUltraPID;
+	public static OperatorInterface oi;
 
 	//Relay
 	public static final int RELAY_PORT = 1;
 	Relay cameraLight;
 	
 	//Camera
-	//TODO: Read these off of the UsbCamera object after basic functionality.
-	//		Exclude CAMERA_ANGLE; we need to define that ourselves anyway.
 	public static final int IMG_WIDTH = 640, IMG_HEIGHT = 480;
 		
 	//Values tape
@@ -73,16 +102,48 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
-		//TODO: Possibly move the camera init to its own private function,
-		//		since it's longer and more complex.		
+		//Initializes all the subsystems
+		driveTrain = new DriveTrain();
+		climb = new Climb();
+		gyroPID = new GyroPID();
+		turnCorrectionPID = new TurnCorrectionPID();
+		shooter = new Shooter();
+		ultrasound = new Ultrasound();
+		frontUltraPID = new FrontUltraPID();
+		backUltraPID = new BackUltraPID();
+		vision = new Vision();
+		
+		//This one comes last or else your code dies just like you if you don't define it last
+		oi = new OperatorInterface();
+				
+		initCamera();
+
+		//Adds autonomous choosers
+		chooser.addDefault("Straight", new AutoSraightGroup());
+		chooser.addObject("Left", new AutoFromStation1());
+		chooser.addObject("Center", new AutoFromStation2());
+		chooser.addObject("Right", new AutoFromStation3());
+		
+		SmartDashboard.putData("Auto Command:", chooser);
+	}
+		
+	private void initCamera()
+	{
+		//Adds the camera, and sets the FPS
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
 		
+		//Initializes the relay for the light
+		cameraLight = new Relay(RELAY_PORT);
+		
+		//Starts a thread running out vision code
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
+			//Sees if there's any contours (reflective tape)
 			if(!pipeline.filterContoursOutput().isEmpty())
 			{
+				//If there is, sets it to a rect object
 				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 								
 				synchronized (imgLock)
@@ -100,31 +161,19 @@ public class Robot extends IterativeRobot
 		});
 		
 		//Please for the love of god don't forget this line or else nothing works and I lose will to live
-		visionThread.start();
-		
-		driveTrain = new DriveTrain();
-		vision = new Vision();
-		
-		//This one comes last or else your code dies just like you if you don't define it last
-		oi = new OI();
-		
-		cameraLight = new Relay(RELAY_PORT);
-		
-		//chooser.addDefault("Default Auto", new FindTape());		
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		visionThread.start();	
 	}
 
 	@Override
 	public void disabledInit() //Called when robot enters disabled mode. Used for reseting any values.
 	{
-
+    	cameraLight.set(Relay.Value.kOff);
+    	gyroPID.disable();
 	}
 
 	@Override
 	public void disabledPeriodic()
-	{
+	{	
 		Scheduler.getInstance().run();
 	}
 
@@ -143,7 +192,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousInit()
 	{
-		autonomousCommand = (Command) chooser.getSelected();
+		//autonomousCommand = (Command) chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -151,7 +200,10 @@ public class Robot extends IterativeRobot
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-
+		
+		gyroPID.reset();
+		autonomousCommand = (Command) chooser.getSelected();
+		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 		{
@@ -162,6 +214,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousPeriodic()
 	{
+		SmartDashboard.putString("Front Range:", Double.toString(ultrasound.getBackRange()));	
+		SmartDashboard.putString("Back Range:", Double.toString(ultrasound.getBackRange()));	
 		Scheduler.getInstance().run();
 	}
 
@@ -173,31 +227,67 @@ public class Robot extends IterativeRobot
 		{
 			autonomousCommand.cancel();
 		}
+
+		gyroPID.reset();
+		gyroPID.enable();
 	}
 
 	@Override
 	public void teleopPeriodic() //This function is called periodically during operator control	
 	{
-		SmartDashboard.putString("DB/String 0", Double.toString(centerX));
-    	SmartDashboard.putString("DB/String 1", Double.toString(targetWidthPx));
-    	SmartDashboard.putString("DB/String 2", Double.toString(vision.getDistance()));
+//		SmartDashboard.putString("Center:", Double.toString(centerX));
+//		SmartDashboard.putString("Back Range:", Double.toString(ultrasound.getBackRange()));
+//		SmartDashboard.putString("Front Range:", Double.toString(ultrasound.getFrontRange()));	
+//		SmartDashboard.putString("Gyro:", Double.toString(gyroPID.getAngle()));
+		
+    	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 0.8));
     	
-    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 1));
-    	oi.printPOV();
-    	
-    	//Sees if button on the dashboard labeled "New Button" (stupid name I know) is pressed
-    	if(SmartDashboard.getBoolean("DB/Button 0", false))
+    	//Decreases or increases the speed of the shooter motor
+    	//If the d-pad buttons are pressed on the xbox controller
+    	if(oi.xbox.getPOV() == 0 && shooter.motorSpeed > -1)
     	{
-    		//If so, then it turns the light on
-    		//Use kForward instead of kOn because kForward uses GND and +12V, where as kOn uses +12V and -12V
-    		cameraLight.set(Relay.Value.kForward);
+    		if(shooter.motorSpeed - 0.05 < -1)
+    		{
+    			shooter.motorSpeed = -1;
+    		}
+    		else
+    		{
+    			shooter.speedUp();
+    		}
     	}
-    	else
+    	else if(oi.xbox.getPOV() == 180 && shooter.motorSpeed < 0)
     	{
-    		cameraLight.set(Relay.Value.kOff);
+    		if(shooter.motorSpeed + 0.05 < 0)
+    		{
+    			shooter.motorSpeed = 0;
+    		}
+    		else
+    		{
+    			shooter.speedDown();
+    		}
     	}
     	
-		Scheduler.getInstance().run();
+    	//TODO: Fix this logic
+    	/*
+    	if(DriverStation.getInstance().getMatchTime() <= 20 &&
+    			DriverStation.getInstance().getMatchTime() >= 18)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 1);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 1);    		
+    	}
+    	else if(DriverStation.getInstance().getMatchTime() == 17)
+    	{
+    		oi.xbox.setRumble(RumbleType.kLeftRumble, 0);
+    		oi.xbox.setRumble(RumbleType.kRightRumble, 0);    
+    	}
+    	
+    	SmartDashboard.putString("DB/String 9" , Double.toString(DriverStation.getInstance().getMatchTime()));
+    	*/
+    	
+    	//cameraLight.set(Relay.Value.kForward);
+
+    	
+    	Scheduler.getInstance().run();
 	}
 
 	@Override

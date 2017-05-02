@@ -17,7 +17,7 @@ public class Axis extends Trigger
 		_joystick = joy;
 		_axis = axis;
 	}
-	
+
 	//If the controller value isn't at 0, then it's seen as active
 	//In the OI file it uses .whenActive() or .whileActive()
 	//That means that command will run either once or while this get method is returning true

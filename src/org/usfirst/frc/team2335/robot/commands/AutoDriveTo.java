@@ -2,43 +2,42 @@ package org.usfirst.frc.team2335.robot.commands;
 
 import org.usfirst.frc.team2335.robot.Robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CenterRobot extends Command
+public class AutoDriveTo extends Command
 {
-    public CenterRobot()
+    public AutoDriveTo()
     {
-        requires(Robot.vision);
+        requires(Robot.driveTrain);
+        requires(Robot.frontUltraPID);
+        requires(Robot.gyroPID);
     }
 
     protected void initialize()
     {
+    	Robot.turnCorrectionPID.enable();
+    	Robot.frontUltraPID.enable();
     	
+    	Robot.frontUltraPID.setSetpoint(0.0);
     }
 
     protected void execute()
     {
-    	if(Robot.vision.center() == 1)
-    	{
-    		Robot.driveTrain.strafe(0.2);
-    	}
-    	else if(Robot.vision.center() == -1)
-    	{
-    		Robot.driveTrain.strafe(-0.2);
-    	} 
+    	Robot.driveTrain.driveToAuto();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-        return Robot.vision.isCentered();    
+        return Robot.frontUltraPID.isOnTarget();
     }
 
+    // Called once after isFinished returns true
     protected void end()
     {
-    	DriverStation.reportWarning("Centered", true);
-    	Robot.driveTrain.stopStrafe();
+    	Robot.driveTrain.stopDrive();
+    	Robot.gyroPID.disable();
+    	Robot.frontUltraPID.disable();
     }
 
     // Called when another command which requires one or more of the same
