@@ -102,6 +102,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit() //Runs once to initialize all global variables
 	{
+		//Initializes all the subsystems
 		driveTrain = new DriveTrain();
 		climb = new Climb();
 		gyroPID = new GyroPID();
@@ -117,27 +118,32 @@ public class Robot extends IterativeRobot
 				
 		initCamera();
 
+		//Adds autonomous choosers
 		chooser.addDefault("Straight", new AutoSraightGroup());
 		chooser.addObject("Left", new AutoFromStation1());
 		chooser.addObject("Center", new AutoFromStation2());
 		chooser.addObject("Right", new AutoFromStation3());
 		
 		SmartDashboard.putData("Auto Command:", chooser);
-		SmartDashboard.putData("GyroPID", gyroPID.getPIDController());
 	}
 		
 	private void initCamera()
 	{
+		//Adds the camera, and sets the FPS
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 		camera.setFPS(30);
 		
+		//Initializes the relay for the light
 		cameraLight = new Relay(RELAY_PORT);
 		
+		//Starts a thread running out vision code
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
 		{
+			//Sees if there's any contours (reflective tape)
 			if(!pipeline.filterContoursOutput().isEmpty())
 			{
+				//If there is, sets it to a rect object
 				Rect r1 = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 								
 				synchronized (imgLock)
