@@ -14,7 +14,6 @@ public class Vision extends Subsystem
 	private final float TARGET_FEET = 1.25f, CAMERA_ANGLE = 46.46f, FULL_VIEW_PX = Robot.IMG_WIDTH;
 	
 	//This is the distance we want to be from the target it feet
-	//TODO: Find appropriate distance from target
 	private final float wantedDistanceInFeet = 12.0f;
 
     public float getDistance()
@@ -32,9 +31,7 @@ public class Vision extends Subsystem
     	//To find distance we use trig, knowing one of the legs, and an angle
     	//We use tangent to find the other leg of the right triangle
     	distance = (float) (halfOfView / Math.tan(Math.toRadians(CAMERA_ANGLE / 2)));
-    	
-    	//TODO: Add a function that factors out our common error %
-    	
+    	    	
     	return distance;
     }
     
