@@ -29,7 +29,6 @@ public class Shooter extends Subsystem
 	//Shooter motor methods
 	public void shootBall()
 	{
-		//TODO: Find best speed for shooter motor
 		shooterMotor.set(motorSpeed);
 	}
 	
@@ -61,7 +60,6 @@ public class Shooter extends Subsystem
 	//Feeder motor methods
 	public void feedBall()
 	{
-		//TODO: find best speed for feed motor
 		feederMotor.set(-1);
 	}
 	
