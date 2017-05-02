@@ -20,7 +20,6 @@ public class FeedShooter extends Command
     protected void execute() 
     {
         //Turns on feed motor
-    	System.out.println("Running");
     	Robot.shooter.feedBall();
     }
 
