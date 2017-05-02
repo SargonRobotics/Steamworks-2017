@@ -3,11 +3,10 @@ package org.usfirst.frc.team2335.robot.subsystems;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
+//This is an abstract class used for other classes to inherit it's methods from it
 public abstract class UltrasoundPID extends PIDSubsystem
 {
-	Ultrasonic backUltra;
-	Ultrasonic frontUltra;
-	
+	//Used to check to make sure it remains on target
 	private int amountOnTarget = 0;
 	
 	final double rangeCompensation = 26.5;
@@ -23,6 +22,7 @@ public abstract class UltrasoundPID extends PIDSubsystem
 	        
 	}
 	
+	//Returns true when the PID remains on target
 	public boolean isOnTarget()
 	{
 		amountOnTarget = onTarget() ? amountOnTarget + 1 : 0;
