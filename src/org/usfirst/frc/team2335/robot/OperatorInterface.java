@@ -77,7 +77,7 @@ public class OperatorInterface
 		climb.whileHeld(new Lift());
 		
 		//Shoot commands
-		shootBall.whileHeld(new ShootGroup()); //Change to ShootGroup when build adds index
+		shootBall.whileHeld(new ShootGroup());
 		intakeBalls.toggleWhenPressed(new IntakeBalls());
 		
 		//Vision commands
@@ -97,7 +97,6 @@ public class OperatorInterface
 		return xbox.getRawButton(Robot.SHOOT_BUTTON);
 	}
 	
-	//TODO: Add javadoc-style comments to every function after a javadoc
 	//		standard is decided.
 	private static double deadzone(double amount, double max) //Creates a deadzone for the axes of the controller
 	{
