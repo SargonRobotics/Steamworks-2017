@@ -44,16 +44,19 @@ public class Robot extends IterativeRobot
 	public static final double DEADZONE = 0.2;
 	
 	//Axes:
-	public static final int MOVE = 1, ROTATE = 2, STRAFE = 0;
+	public static final int MOVE = 1, ROTATE = 0;
 	
 	//Climb buttons
-	public static final int CLIMB = 4;
+	public static final int CLIMB = 2;
 	
 	//Shooter buttons
-	public static final int SHOOT_BUTTON = 1, INTAKE_BUTTON = 1;
+	public static final int SHOOT_BUTTON = 3 /* <-- AXES */, INTAKE_BUTTON = 1;
 	
 	//Vision buttons
-	public static final int CENTER = 2, POSITION = 3;
+	public static final int CENTER = 3, POSITION = 4;
+	
+	//Move buttons
+	public static final int STRAFELEFT = 5, STRAFERIGHT = 6;
 	
 	//Motor ports:
 	public static final int LEFT_PORT = 0, RIGHT_PORT = 1, STRAFE_PORT = 2,
@@ -89,6 +92,9 @@ public class Robot extends IterativeRobot
 		
 	//Values tape
 	public static int centerX = 0, targetWidthPx = 0;
+	
+	//For shoot logic
+	public boolean isShooting = false;
 	
 	//Camera
 	private VisionThread visionThread;
@@ -240,7 +246,7 @@ public class Robot extends IterativeRobot
 //		SmartDashboard.putString("Front Range:", Double.toString(ultrasound.getFrontRange()));	
 //		SmartDashboard.putString("Gyro:", Double.toString(gyroPID.getAngle()));
 		
-    	driveTrain.drive(oi.getAxis(JOYSTICK, MOVE, 1), oi.getAxis(JOYSTICK, ROTATE, 0.8));
+    	driveTrain.drive(oi.getAxis(MOVE, 1), oi.getAxis(ROTATE, 0.8));
     	
     	//Decreases or increases the speed of the shooter motor
     	//If the d-pad buttons are pressed on the xbox controller
@@ -266,6 +272,7 @@ public class Robot extends IterativeRobot
     			shooter.speedDown();
     		}
     	}
+    	
     	
     	//TODO: Fix this logic
     	/*

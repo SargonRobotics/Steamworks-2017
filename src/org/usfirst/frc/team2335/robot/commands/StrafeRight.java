@@ -4,14 +4,11 @@ import org.usfirst.frc.team2335.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Strafe extends Command 
-{
-	private int _joy;
-	
-    public Strafe(int joy) 
+public class StrafeRight extends Command 
+{	
+    public StrafeRight() 
     {
        requires(Robot.driveTrain);
-       _joy = joy;
     }
 
     protected void initialize()
@@ -21,10 +18,7 @@ public class Strafe extends Command
     
     protected void execute() 
     {
-    	if(Robot.oi.getAxis(_joy, Robot.MOVE, 1) == 0 && Robot.oi.getAxis(_joy, Robot.ROTATE, 1) == 0)
-    	{
-    		Robot.driveTrain.strafe(Robot.oi.getAxis(_joy, Robot.STRAFE, 1));
-    	}
+    	Robot.driveTrain.strafe(1);
     }
     
     protected boolean isFinished() 

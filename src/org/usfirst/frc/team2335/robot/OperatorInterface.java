@@ -1,13 +1,11 @@
 package org.usfirst.frc.team2335.robot;
 
-import org.usfirst.frc.team2335.robot.commands.AutoTurn;
 import org.usfirst.frc.team2335.robot.commands.CenterRobot;
 import org.usfirst.frc.team2335.robot.commands.IntakeBalls;
 import org.usfirst.frc.team2335.robot.commands.Lift;
 import org.usfirst.frc.team2335.robot.commands.PositionRobot;
-import org.usfirst.frc.team2335.robot.commands.ShootGroup;
-import org.usfirst.frc.team2335.robot.commands.Strafe;
-import org.usfirst.frc.team2335.robot.triggers.Axis;
+import org.usfirst.frc.team2335.robot.commands.StrafeLeft;
+import org.usfirst.frc.team2335.robot.commands.StrafeRight;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -15,21 +13,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OperatorInterface
 {	
-	Joystick controller, xbox;
-	
-	//Auto test buttons
-	JoystickButton autoTest;
+	Joystick xbox;
 	
 	//Climb buttons
 	JoystickButton climb;
 	
 	//Shoot buttons
-	JoystickButton shootBall, intakeBalls;
+	JoystickButton intakeBalls;
 	
 	//Vision buttons
-	JoystickButton center, position;
-	Axis strafe, strafeXbox;
-	
+	JoystickButton center, position, strafeLeft, strafeRight;
+		
 	/**
 	 * OperatorInterface constructor. Always initialize last in robot init.
 	 * Otherwise, it will crash since the OI file will try to access other subsystems once initialized.
@@ -40,44 +34,34 @@ public class OperatorInterface
 		/**** Definitions ****/
 		
 		//Joysticks
-		controller = new Joystick(0);
-		xbox = new Joystick(1);
+		xbox = new Joystick(0);
 		
-		//Axes
-		strafe = new Axis(controller, Robot.STRAFE);
-		strafeXbox = new Axis(xbox, Robot.STRAFE);
-		
-		//Auto test buttons
-		autoTest = new JoystickButton(xbox, 3);
+		//Buttons
+		strafeLeft = new JoystickButton(xbox, Robot.STRAFELEFT);
+		strafeRight = new JoystickButton(xbox, Robot.STRAFERIGHT);
 		
 		//Climb buttons
 		climb = new JoystickButton(xbox, Robot.CLIMB);
 		
 		//Shoot buttons
-		shootBall = new JoystickButton(controller, Robot.SHOOT_BUTTON);
 		intakeBalls = new JoystickButton(xbox, Robot.INTAKE_BUTTON);
 
 		
 		//Vision buttons
-		center = new JoystickButton(controller, Robot.CENTER);
-		position = new JoystickButton(controller, Robot.POSITION);
+		center = new JoystickButton(xbox, Robot.CENTER);
+		position = new JoystickButton(xbox, Robot.POSITION);
 				
 		
 		//**** Links to Commands ****/
 		
 		//Drive commands
-		strafe.whileActive(new Strafe(Robot.JOYSTICK));
-		strafeXbox.whileActive(new Strafe(Robot.XBOX));
-		
-		
-		//Auto test commands
-		autoTest.whenPressed(new AutoTurn(-1));
+		strafeLeft.whileActive(new StrafeLeft());
+		strafeRight.whileActive(new StrafeRight());
 		
 		//Climb commands
 		climb.whileHeld(new Lift());
 		
 		//Shoot commands
-		shootBall.whileHeld(new ShootGroup());
 		intakeBalls.toggleWhenPressed(new IntakeBalls());
 		
 		//Vision commands
@@ -86,9 +70,9 @@ public class OperatorInterface
 		
 	}
 	
-	public double getAxis(int joy, int axis, double max)
+	public double getAxis(int axis, double max)
 	{
-		return joy == 0 ? deadzone(controller.getRawAxis(axis), max) : deadzone(xbox.getRawAxis(axis), max);
+		return deadzone(xbox.getRawAxis(axis), max);
 	}
 	
 	//Returns button value so the command group can quit when it shuts off
