@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2335.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 //This is an abstract class used for other classes to inherit it's methods from it
