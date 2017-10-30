@@ -103,8 +103,5 @@ public class DriveTrain extends Subsystem
 	}	
 	
 	@Override
-	protected void initDefaultCommand()
-	{
-		
-	}
+	protected void initDefaultCommand() {  }
 }
